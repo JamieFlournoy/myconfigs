@@ -1,0 +1,31 @@
+alias ll="ls -ltrA"
+
+# Git related aliases
+alias gs='git status'
+function gc {
+  if [ -z "$1" ]; then
+    git checkout master
+  else
+    git checkout $1
+  fi
+}
+alias gb='git branch -a -v'
+alias gbd='git branch -d'
+alias gcb='git checkout -b'
+alias gai='git add -i'
+alias gl='git log --graph --oneline --decorate'
+alias gd='git diff'
+alias gdh='git diff HEAD'
+
+complete -o default -o nospace -F _git_checkout gc
+complete -o default -o nospace -F _git_diff gd
+
+# aliases for things that don't work when running inside GNU Screen
+if [[ -n `echo $TERMCAP | grep '|screen|'` ]]; then
+  alias mate='open -a TextMate.app'
+  alias gitx='open -a GitX.app .'
+  #alias gitx='open -a "GitX 193b834 pre 0.7.0.app" .'
+fi
+
+alias clean_tilde_files='find . -name "*~" -exec rm {} \; -or -name ".*~" -exec rm {} \;'
+
