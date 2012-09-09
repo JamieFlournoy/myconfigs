@@ -79,7 +79,7 @@ export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
 
 # on Mac OS X, enable go
 BREW_BINARY=`which brew`
-if [ -z "${BREW_BINARY}" ]; then
+if [ ! -z "${BREW_BINARY}" ]; then
    # for Go
    export GOOS=darwin
    export GOARCH=amd64
