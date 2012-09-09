@@ -77,11 +77,15 @@ export PS1='\t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
 # a nice MySQL prompt
 export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
 
-# for Go
-export GOOS=darwin
-export GOARCH=amd64
-export GOROOT=`brew --prefix go`
-export GOBIN=`brew --prefix`/bin/
+# on Mac OS X, enable go
+BREW_BINARY=`which brew`
+if [ -z "${BREW_BINARY}" ]; then
+   # for Go
+   export GOOS=darwin
+   export GOARCH=amd64
+   export GOROOT=`brew --prefix go`
+   export GOBIN=`brew --prefix`/bin/
+fi
 
 # added by the RVM installer
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
