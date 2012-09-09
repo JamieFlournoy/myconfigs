@@ -14,7 +14,7 @@ function preserve_file_if_exists {
     SAVE="${1}_orig"
     if [ -f "${FILE}" ]; then
 	echo "Preserving existing '${FILE}' as '${SAVE}'"
-	# /bin/mv "${FILE}" "${SAVE}"
+	/bin/mv "${FILE}" "${SAVE}"
     fi
 }
 
