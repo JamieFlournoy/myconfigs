@@ -1,0 +1,229 @@
+;; -*- mode: Emacs-Lisp -*-
+
+(autoload 'css-mode "css-mode")
+(setq auto-mode-alist
+      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+
+;; don't rename original to original~ and then create a new one,
+;; instead copy original to original~ and modify original
+;; this is for Graphviz.app and many others
+(setq backup-by-copying t)
+
+;; disable middle button, because if it's a wheel mouse that button is
+;; too sensitive so I get lots of unexpected pasted crap in the middle
+;; of the stuff I'm editing!
+(global-set-key [mouse-2] nil)
+
+;; for html-helper-mode.el
+;;(autoload 'html-helper-mode "html-helper-mode" "Yay HTML" t)
+;;(setq auto-mode-alist (cons '("\\.html$" . html-helper-mode) auto-mode-alist))
+
+;; loads ruby mode when a .rb file is opened.
+(setq load-path (append (list (expand-file-name "~/.emacs.d/ruby-mode")) load-path))
+(autoload 'ruby-mode "ruby-mode" "Major mode for editing ruby scripts." t)
+
+(setq auto-mode-alist (cons '("\\.jsp$" . html-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '(".rhtml$" . html-mode) auto-mode-alist))
+
+;;(load-file "/Applications/Emacs.app/Contents/Resources/share/emacs/22.0.95/site-lisp/graphviz-dot-mode.el") 
+
+(require 'generic-x)
+(add-to-list 'generic-extras-enable-list 'javascript-generic-mode)
+
+;; for html-font.el
+;;(add-hook 'html-helper-load-hook '(lambda () (require 'html-font)))
+
+;; for php-mode-099.el
+;;(load-library "php-mode-099")
+
+;MISC SECTION
+
+;; When you scroll down with the cursor, emacs will move down the buffer one 
+;; line at a time, instead of in larger amounts.
+(setq scroll-step 1)
+
+;; show highlighting
+(setq-default transient-mark-mode t)
+
+;; syntax hilite
+(global-font-lock-mode 1)
+(setq font-lock-maximum-decoration t)
+(custom-set-faces)
+
+;; happy NEW colors 3/16/07
+(set-cursor-color "Deep Pink")
+;; these 2 appear to do nothing...?
+;; (set-foreground-color "green")
+;; (set-background-color "Gray1")
+
+;; overall colors regardless of font-lock-mode
+(set-face-foreground 'modeline "black")
+(set-face-background 'modeline "gray") 
+(set-face-background 'region "khaki1")
+(set-face-foreground 'region "black")
+(set-mouse-color "yellow")
+
+;; type name
+(set-face-foreground 'font-lock-type-face "orchid4")
+;; comment
+(set-face-foreground 'font-lock-comment-face "orchid")
+;; function name
+(set-face-foreground 'font-lock-function-name-face "blue")
+;; language keyword
+(set-face-foreground 'font-lock-keyword-face "red2")
+;; string literal
+;; (set-face-foreground 'font-lock-string-face "gray30")
+(set-face-foreground 'font-lock-string-face "saddle brown")
+;; (set-face-background 'font-lock-string-face "seashell1")
+;; variable
+(set-face-foreground 'font-lock-variable-name-face "dark green")
+;; paren balancing highlight
+(set-face-background 'secondary-selection "dodger blue")
+(set-face-foreground 'highlight "orange" )
+(set-face-background 'highlight "blue")
+
+;; improved colors taken from desktop on 2012-07-26
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(inhibit-startup-screen t))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(sh-heredoc ((((class color) (background light)) (:foreground "purple4")))))
+(set-face-foreground 'font-lock-comment-face "DarkOliveGreen3")
+(set-face-foreground 'font-lock-string-face  "purple4")
+
+
+;; show paren, brace, and curly brace "partners" at all times
+(show-paren-mode t)
+
+;; show column number in status bar
+(column-number-mode t)
+
+;; show more info in taskbar/icon than just "Emacs"
+(setq-default frame-title-format (list "%65b %f"))
+(setq-default icon-title-format (list "%b"))
+
+;; show time on status bar
+(display-time)
+
+;; make the y or n suffice for a yes or no question
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;; don't automatically add new lines when scrolling down at the bottom
+;; of a buffer
+(setq next-line-add-newlines nil)
+
+;; be able to do Ctrl-X, u/l  to upper/lowercase regions without confirm
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+
+;; show ascii table
+(defun ascii-table ()
+  "Print the ascii table. Based on a defun by Alex Schroeder <asc@bsiag.com>"
+  (interactive)
+  (switch-to-buffer "*ASCII*")
+  (erase-buffer)
+  (insert (format "ASCII characters up to number %d.\n" 254))
+  (let ((i 0))
+    (while (< i 254)
+      (setq i (+ i 1))
+      (insert (format "%4d %c\n" i i))))
+  (beginning-of-buffer))
+
+;; insert date into buffer
+(defun insert-date ()
+  "Insert date at point."
+  (interactive)
+  (insert (format-time-string "%a %b %e, %Y %l:%M %p")))
+
+;; convert a buffer from dos ^M end of lines to unix end of lines
+(defun dos2unix ()
+  (interactive)
+    (goto-char (point-min))
+      (while (search-forward "\r" nil t) (replace-match "")))
+
+;; vice versa
+(defun unix2dos ()
+  (interactive)
+    (goto-char (point-min))
+      (while (search-forward "\n" nil t) (replace-match "\r\n")))
+
+;; This method, when bound to C-x C-c, allows you to close an emacs
+;; frame the same way, whether it's the sole window you have open, or
+;; whether it's a "child" frame of a "parent" frame.  If you're like
+;; me, and use emacs in a windowing environment, you probably have
+;; lots of frames open at any given time.  Well, it's a pain to
+;; remember to do Ctrl-x 5 0 to dispose of a child frame, and to
+;; remember to do C-x C-x to close the main frame (and if you're not
+;; careful, doing so will take all the child frames away with it).
+;; This is my solution to that: an intelligent close-frame operation
+;; that works in all cases (even in an emacs -nw session).
+(defun intelligent-close ()
+  "quit a frame the same way no matter what kind of frame you are on"
+  (interactive)
+  (if (eq (car (visible-frame-list)) (selected-frame))
+      ;;for parent/master frame...
+      (if (> (length (visible-frame-list)) 1)
+	  ;;close a parent with children present
+	  (delete-frame (selected-frame))
+	;;close a parent with no children present
+	(save-buffers-kill-emacs))
+    ;;close a child frame
+    (delete-frame (selected-frame))))
+
+;; a no-op function to bind to if you want to set a keystroke to null
+(defun void ()
+  "this is a no-op"
+  (interactive))
+
+;; compute the length of the marked region 
+(defun region-length ()
+  "length of a region"
+  (interactive)
+  (message (format "%d" (- (region-end) (region-beginning)))))
+
+(defun split-window-fork ()
+  (concat
+   "spawns a new frame so that a 2-way split window in one frame becomes "
+   "2 top-level frames.  Has the same action as ")
+  (interactive)
+  (progn
+    (let ((current_window (selected-window))
+	  (other_window (next-window (selected-window)))
+	  (current_buffer (window-buffer (selected-window)))
+	  (other_buffer (window-buffer (next-window (selected-window)))))
+      (make-frame)
+      (select-window other_window)
+      (delete-other-windows))))
+
+;; the following snippet was copied from the Oreilly-published book
+;; "Writing GNU Emacs Extensions" by Bob Glickstein.
+(defalias 'scroll-ahead 'scroll-up)
+(defalias 'scroll-behind 'scroll-down)
+(defun scroll-n-lines-ahead (&optional n)
+  "Scroll ahead N lines (1 by default)."
+  (interactive "P")
+  (progn
+    (scroll-ahead (prefix-numeric-value n))
+    (next-line 1)))
+
+(defun scroll-n-lines-behind (&optional n)
+  "Scroll behind N lines (1 by default)."
+  (interactive "P")
+  (progn
+    (scroll-behind (prefix-numeric-value n))
+    (previous-line 1)))
+
+;;LOCAL HOOKS SECTION - note this section should be last to allow an
+;;.emacs_local file to override the .emacs.  The .emacs_local file should
+;;contain anything specific to a particular environment/platform/machine.
+(if (file-exists-p "~/.emacs_local") 
+    (load-file "~/.emacs_local"))
+

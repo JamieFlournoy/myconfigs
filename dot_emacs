@@ -1,0 +1,3 @@
+;; -*- mode: Emacs-Lisp -*-
+
+(load-file "~/myconfigs/shared_emacs")

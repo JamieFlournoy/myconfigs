@@ -1,0 +1,15 @@
+# set the command character, as with -e^oo on the command line
+escape ^oo
+
+defutf8 on
+
+startup_message off
+
+# cool status line
+hardstatus alwayslastline
+hardstatus string '%{= }%{= kg}[ %{=b G}%H %{-}][%= %{kw}%?%-Lw%?%{-}%{= kR}(%{W}%n*%f %t%?(%u)%?%{-})%{-}%{= kg}%{= kw}%?%+Lw%?%?%= %{-}%{= g}]%{=b C}[ %D %M %d %Y %C%a ]%{W}'
+
+#backtick 1 5 5 uptime
+#hardstatus alwayslastline "%1`"
+
+shell -${SHELL}

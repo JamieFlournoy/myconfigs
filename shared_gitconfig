@@ -1,0 +1,39 @@
+[user]
+	name = Jamie Flournoy
+	email = jamie@pervasivecode.com
+[alias]
+	st = status
+	ci = commit
+	co = checkout
+	lol = log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s %C(green)%an %C(bold black)%cr%C(reset)' --abbrev-commit --date=relative
+  
+[merge]
+	tool = opendiff
+[core]
+	legacyheaders = false
+	excludesfile = ~/.gitignore
+[repack]
+	usedeltabaseoffset = true
+[color]
+	ui = auto
+[push]
+	default = matching
+[log]
+	date = local
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+
+# new 2011-04-26 from
+# http://stackoverflow.com/questions/267761/what-does-your-gitconfig-contain
+[color "diff"]
+  meta = magenta
+[merge]
+  tool = kdiff3
+[help]
+  format = web
+[branch]
+  autosetupmerge = true
+  autosetuprebase = always
+[advice]
+    statusHints = false

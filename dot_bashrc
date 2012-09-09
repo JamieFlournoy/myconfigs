@@ -1,0 +1,87 @@
+export TERM=dtterm
+export EDITOR=`which emacs`
+
+# tips from http://blog.macromates.com/2008/working-with-history-in-bash/
+# Do not store duplicate entries in history (keeps history shorter)
+export HISTCONTROL=erasedups
+# keep 10K lines (default is 1K)
+export HISTSIZE=10000
+# append to the end of the history, instead of overwriting, on shell exit
+shopt -s histappend
+
+function add_once_to_path() {
+    if [[ "$PATH" != "*$1*" ]]; then
+        PATH=$PATH:$1
+        export PATH
+    fi
+}
+
+
+function prepend_once_to_path() {
+    if [[ "$PATH" != "*$1*" ]]; then
+        PATH=$1:$PATH
+        export PATH
+    fi
+}
+
+# enable RVM
+#if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
+
+prepend_once_to_path "$HOME/bin"
+#add_once_to_path "$HOME/Library/iTunes/Scripts/iTunes-LAME.app/Contents/Resources/"
+#add_once_to_path "/usr/local/mysql/bin"
+add_once_to_path "/usr/local/sbin"
+prepend_once_to_path "/usr/local/bin"
+
+#add_once_to_path "$HOME/Code/Android/android-sdk-mac_86/tools/"
+
+
+if [ $MANPATH ]; then
+    function add_once_to_manpath() {
+        if [[ "$MANPATH" != "*$1*" ]]; then
+            MANPATH=$MANPATH:$1
+        fi
+    }
+    add_once_to_manpath "/usr/local/man"
+else
+    MANPATH=/usr/share/man:/usr/bin/man:/usr/local/man:/usr/local/share/man:/opt/local/man
+fi
+export MANPATH
+
+if [ -f ~/.bash_aliases ]; then
+ . ~/.bash_aliases
+fi
+
+if [ -f ~/myconfigs/dot_bash_aliases ]; then
+ . ~/myconfigs/dot_bash_aliases
+fi
+
+if [ -f ~/.bash_aliases_jamie ]; then
+ . ~/.bash_aliases_jamie
+fi
+
+GIT_BASH_COMPLETION="/usr/local/etc/bash_completion.d/git-prompt.sh"
+GIT_BASH_COMPLETION_OLD="/usr/local/etc/bash_completion.d/git-completion.bash"
+if [ -f $GIT_BASH_COMPLETION ]; then
+  . $GIT_BASH_COMPLETION
+elif [ -f $GIT_BASH_COMPLETION_OLD ]; then
+  . $GIT_BASH_COMPLETION_OLD
+fi
+
+# my old favorite prompt:
+#export PS1="\t \h \u \w >"
+
+# My new Git friendly prompt, which uses the Git bash completion above:
+export PS1='\t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
+
+# a nice MySQL prompt
+export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
+
+# for Go
+export GOOS=darwin
+export GOARCH=amd64
+export GOROOT=`brew --prefix go`
+export GOBIN=`brew --prefix`/bin/
+
+# added by the RVM installer
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
