@@ -60,19 +60,24 @@ if [ -f ~/.bash_aliases_jamie ]; then
  . ~/.bash_aliases_jamie
 fi
 
+# My new Git friendly prompt, which uses the Git bash completion above:
+export PS1='\t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
+
+# load the Bash completion function for Git
 GIT_BASH_COMPLETION="/usr/local/etc/bash_completion.d/git-prompt.sh"
 GIT_BASH_COMPLETION_OLD="/usr/local/etc/bash_completion.d/git-completion.bash"
+GIT_BASH_COMPLETION_UBUNTU="/etc/bash_completion.d/git"
 if [ -f $GIT_BASH_COMPLETION ]; then
   . $GIT_BASH_COMPLETION
 elif [ -f $GIT_BASH_COMPLETION_OLD ]; then
   . $GIT_BASH_COMPLETION_OLD
+elif [ -f $GIT_BASH_COMPLETION_UBUNTU ]; then
+ . $GIT_BASH_COMPLETION_UBUNTU
+else
+ # Don't know how to find Bash Git, completion
+ # Fall back on  my old favorite prompt:
+ export PS1="\t \h@\u \w >"
 fi
-
-# my old favorite prompt:
-#export PS1="\t \h \u \w >"
-
-# My new Git friendly prompt, which uses the Git bash completion above:
-export PS1='\t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
 
 # a nice MySQL prompt
 export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
