@@ -1,6 +1,9 @@
 ;; -*- mode: Emacs-Lisp -*-
 (setq inhibit-splash-screen t)
 
+;; (setq-default indent-tabs-mode nil)
+;; (setq tab-width 2)
+
 (autoload 'css-mode "css-mode")
 (setq auto-mode-alist
       (cons '("\\.css\\'" . css-mode) auto-mode-alist))
@@ -27,7 +30,7 @@
 (setq auto-mode-alist (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '(".rhtml$" . html-mode) auto-mode-alist))
 
-;;(load-file "/Applications/Emacs.app/Contents/Resources/share/emacs/22.0.95/site-lisp/graphviz-dot-mode.el") 
+;;(load-file "/Applications/Emacs.app/Contents/Resources/share/emacs/22.0.95/site-lisp/graphviz-dot-mode.el")
 
 (require 'generic-x)
 (add-to-list 'generic-extras-enable-list 'javascript-generic-mode)
@@ -40,7 +43,7 @@
 
 ;MISC SECTION
 
-;; When you scroll down with the cursor, emacs will move down the buffer one 
+;; When you scroll down with the cursor, emacs will move down the buffer one
 ;; line at a time, instead of in larger amounts.
 (setq scroll-step 1)
 
@@ -60,7 +63,7 @@
 
 ;; overall colors regardless of font-lock-mode
 (set-face-foreground 'modeline "black")
-(set-face-background 'modeline "gray") 
+(set-face-background 'modeline "gray")
 (set-face-background 'region "khaki1")
 (set-face-foreground 'region "black")
 (set-mouse-color "yellow")
@@ -184,7 +187,7 @@
   "this is a no-op"
   (interactive))
 
-;; compute the length of the marked region 
+;; compute the length of the marked region
 (defun region-length ()
   "length of a region"
   (interactive)
@@ -225,6 +228,6 @@
 ;;LOCAL HOOKS SECTION - note this section should be last to allow an
 ;;.emacs_local file to override the .emacs.  The .emacs_local file should
 ;;contain anything specific to a particular environment/platform/machine.
-(if (file-exists-p "~/.emacs_local") 
+(if (file-exists-p "~/.emacs_local")
     (load-file "~/.emacs_local"))
 

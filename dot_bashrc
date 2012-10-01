@@ -18,16 +18,12 @@ function add_once_to_path() {
     fi
 }
 
-
 function prepend_once_to_path() {
     if [[ "$PATH" != "*$1*" ]]; then
         PATH=$1:$PATH
         export PATH
     fi
 }
-
-# enable RVM
-#if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
 
 prepend_once_to_path "$HOME/bin"
 #add_once_to_path "$HOME/Library/iTunes/Scripts/iTunes-LAME.app/Contents/Resources/"
@@ -91,14 +87,34 @@ if [ ! -z "${BREW_BINARY}" ]; then
     fi
 fi # end of Brew things
 
-# my old favorite prompt:
-#export PS1="\t \h \u \w >"
+# My new Git friendly prompt, which uses Git bash completion
+GIT_PS1='\t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
 
-# My new Git friendly prompt, which uses the Git bash completion above:
-export PS1='\t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
+# load the Bash completion function for Git
+GIT_BASH_COMPLETION="/usr/local/etc/bash_completion.d/git-prompt.sh"
+GIT_BASH_COMPLETION_OLD="/usr/local/etc/bash_completion.d/git-completion.bash"
+GIT_BASH_COMPLETION_UBUNTU="/etc/bash_completion.d/git"
+if [ -f $GIT_BASH_COMPLETION ]; then
+  . $GIT_BASH_COMPLETION
+  export PS1=${GIT_PS1}
+elif [ -f $GIT_BASH_COMPLETION_OLD ]; then
+  . $GIT_BASH_COMPLETION_OLD
+  export PS1=${GIT_PS1}
+elif [ -f $GIT_BASH_COMPLETION_UBUNTU ]; then
+ . $GIT_BASH_COMPLETION_UBUNTU
+  export PS1=${GIT_PS1}
+else
+ # Don't know how to find Bash Git, completion
+ # Fall back on  my old favorite prompt:
+ export PS1="\t \h@\u \w >"
+fi
 
 # a nice MySQL prompt
 export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
 
-# added by the RVM installer
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+# modified from what the RVM installer added to first check for RVM
+if [[ -d $HOME/.rvm/ ]]; then
+    PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+fi
+
+
