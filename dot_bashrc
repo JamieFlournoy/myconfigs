@@ -1,3 +1,5 @@
+# -*- mode: shell-script -*-
+
 export TERM=dtterm
 export EDITOR=`which emacs`
 
@@ -60,13 +62,34 @@ if [ -f ~/.bash_aliases_jamie ]; then
  . ~/.bash_aliases_jamie
 fi
 
-GIT_BASH_COMPLETION="/usr/local/etc/bash_completion.d/git-prompt.sh"
-GIT_BASH_COMPLETION_OLD="/usr/local/etc/bash_completion.d/git-completion.bash"
-if [ -f $GIT_BASH_COMPLETION ]; then
-  . $GIT_BASH_COMPLETION
-elif [ -f $GIT_BASH_COMPLETION_OLD ]; then
-  . $GIT_BASH_COMPLETION_OLD
-fi
+# See if the excellent Homebrew pakage manager for MacOS
+# (http://mxcl.github.com/homebrew/) is installed. If so,
+# configure this shell for some packages that might be installed
+BREW_BINARY=`which brew`
+if [ ! -z "${BREW_BINARY}" ]; then
+    BREW_PREFIX=`brew --prefix`
+    #
+    # If the bash_completion package is installed, use it
+    # it provides completion for Git and SSH if you have
+    # also installed the Brew versions of those programs
+    #
+    BASH_COMPLETION_SCRIPT=${BREW_PREFIX}/etc/bash_completion
+    if [ -f ${BASH_COMPLETION_SCRIPT} ]; then
+	. ${BASH_COMPLETION_SCRIPT}
+    fi
+
+    #
+    # for Go (a programming language golang.org)
+    #
+    BREW_GO=`brew --prefix go`
+    # $? (exit code) should equal 0 if that succeeded
+    if (( $? && 0 )); then
+	export GOOS=darwin
+	export GOARCH=amd64
+	export GOROOT=${BREW_GO}
+	export GOBIN=${BREW_PREFIX}/bin/
+    fi
+fi # end of Brew things
 
 # my old favorite prompt:
 #export PS1="\t \h \u \w >"
@@ -76,16 +99,6 @@ export PS1='\t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
 
 # a nice MySQL prompt
 export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
-
-# on Mac OS X, enable go
-BREW_BINARY=`which brew`
-if [ ! -z "${BREW_BINARY}" ]; then
-   # for Go
-   export GOOS=darwin
-   export GOARCH=amd64
-   export GOROOT=`brew --prefix go`
-   export GOBIN=`brew --prefix`/bin/
-fi
 
 # added by the RVM installer
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
