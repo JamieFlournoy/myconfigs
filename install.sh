@@ -41,3 +41,4 @@ install_symlink emacs
 install_copy gitconfig
 install_symlink gitignore
 install_symlink screenrc
+install_symlink tmux.conf
