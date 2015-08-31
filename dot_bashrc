@@ -1,27 +1,30 @@
 # -*- mode: shell-script -*-
 
-export TERM=dtterm
-export EDITOR=`which emacs`
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
 
-# tips from http://blog.macromates.com/2008/working-with-history-in-bash/
-# Do not store duplicate entries in history (keeps history shorter)
-export HISTCONTROL=erasedups
-# keep 10K lines (default is 1K)
-export HISTSIZE=10000
-# append to the end of the history, instead of overwriting, on shell exit
-shopt -s histappend
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 function add_once_to_path() {
-    if [[ "$PATH" != "*$1*" ]]; then
-        PATH=$PATH:$1
-        export PATH
+    if [[ -d "$1" ]]; then
+	if [[ "$PATH" != "*$1*" ]]; then
+            PATH=$PATH:$1
+            export PATH
+	fi
     fi
 }
 
 function prepend_once_to_path() {
-    if [[ "$PATH" != "*$1*" ]]; then
-        PATH=$1:$PATH
-        export PATH
+    if [[ -d "$1" ]]; then
+	if [[ "$PATH" != "*$1*" ]]; then
+            PATH=$1:$PATH
+            export PATH
+	fi
     fi
 }
 
@@ -33,14 +36,61 @@ prepend_once_to_path "/usr/local/bin"
 
 #add_once_to_path "$HOME/Code/Android/android-sdk-mac_86/tools/"
 
+export TERM=dtterm
+
+# xterm is lame, use 256 colors.
+if [[ "$TERM" == "xterm" ]]; then
+  export TERM=xterm-256color
+fi
+
+function set_editor_if_exists() {
+    editor_path=`which $1`
+    if [[ -n "${editor_path}" ]]; then
+	export EDITOR=${editor_path}
+    fi
+}
+# Try and set an editor, in order from least to most preferred.
+set_editor_if_exists nano
+set_editor_if_exists mg
+set_editor_if_exists emacs
+if [[ "$EDITOR" == `which emacs` ]]; then
+    export EDITOR="$EDITOR -w"
+fi
+
+# Tips from http://blog.macromates.com/2008/working-with-history-in-bash/
+# Do not store duplicate entries in history (keeps history shorter).
+export HISTCONTROL=erasedups
+# keep 50K lines (default is 1K)
+export HISTSIZE=50000
+# Append to the end of the history, instead of overwriting, on shell exit.
+shopt -s histappend
+
+# Merge all shells' histories together.
+# export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# Enable color support of ls, and also add handy aliases.
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
 
 if [ $MANPATH ]; then
     function add_once_to_manpath() {
-        if [[ "$MANPATH" != "*$1*" ]]; then
-            MANPATH=$MANPATH:$1
-        fi
+	if [[ -d "$1" ]]; then
+            if [[ "$MANPATH" != "*$1*" ]]; then
+		MANPATH=$MANPATH:$1
+            fi
+	fi
     }
     add_once_to_manpath "/usr/local/man"
+    add_once_to_manpath "/opt/local/man"
 else
     MANPATH=/usr/share/man:/usr/bin/man:/usr/local/man:/usr/local/share/man:/opt/local/man
 fi
@@ -87,26 +137,43 @@ if [ ! -z "${BREW_BINARY}" ]; then
     fi
 fi # end of Brew things
 
-# My new Git friendly prompt, which uses Git bash completion
-GIT_PS1='\t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
+# my old favorite prompt
+#export PS1="\t \h \u \w >"
+# multiline prompt w/o git
+export PS1="\D{%a %-m/%-d} \t \u@\h \w\n\$ "
+
+# A Git-friendly prompt:
+if [[ "$TERM" == "dumb" ]]; then
+   GIT_PS1='\D{%a %-m/%-d} \t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
+else
+    # FYI ~/bin/show-term-colors.sh shows terminal color codes
+    # ex 47;1;37m is bold white on gray BG
+    PROMPT_COLOR="\[\033[30;47m\]"
+    PROMPT_COLOR_2="\[\033[35m\]"
+    NO_COLOR="\[\033[0m\]"
+    # My newer (8/12/2011) colored Git-friendly prompt
+    GIT_PS1=${PROMPT_COLOR}'\D{%a %-m/%-d} \t \u@\h \w $(__git_ps1 "(branch: %s)")'${NO_COLOR}'\n'${PROMPT_COLOR_2}'\$ '${NO_COLOR}
+fi
 
 # load the Bash completion function for Git
-GIT_BASH_COMPLETION="/usr/local/etc/bash_completion.d/git-prompt.sh"
-GIT_BASH_COMPLETION_OLD="/usr/local/etc/bash_completion.d/git-completion.bash"
-GIT_BASH_COMPLETION_UBUNTU="/etc/bash_completion.d/git"
-if [ -f $GIT_BASH_COMPLETION ]; then
-  . $GIT_BASH_COMPLETION
+function find_and_load_bash_completion() {
+if [[ -f $1 ]]; then
+  . $1
   export PS1=${GIT_PS1}
-elif [ -f $GIT_BASH_COMPLETION_OLD ]; then
-  . $GIT_BASH_COMPLETION_OLD
-  export PS1=${GIT_PS1}
-elif [ -f $GIT_BASH_COMPLETION_UBUNTU ]; then
- . $GIT_BASH_COMPLETION_UBUNTU
-  export PS1=${GIT_PS1}
-else
- # Can't find Bash Git completion, so
- # fall back on  my old favorite prompt:
- export PS1="\t \h@\u \w >"
+fi
+}
+
+find_and_load_bash_completion /etc/bash_completion.d/git
+find_and_load_bash_completion /usr/local/etc/bash_completion.d/git-completion.bash
+find_and_load_bash_completion /usr/local/etc/bash_completion.d/git-prompt.sh
+
+if [[ -f ~/.alias_completion_function ]]; then
+    source ~/.alias_completion_function
+fi
+
+if [[ -n `which p4` ]]; then
+    export P4CONFIG=.p4config
+    export P4EDITOR=$EDITOR
 fi
 
 # a nice MySQL prompt
@@ -119,4 +186,8 @@ fi
 
 if [[ "rvm is a function" != "`type -t rvm | head -n 1`" ]]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+fi
+
+if [[ -f ~/.bashrc_local ]]; then
+    . ~/.bashrc_local
 fi
