@@ -28,6 +28,7 @@ function prepend_once_to_path() {
 prepend_once_to_path "$HOME/bin"
 #add_once_to_path "$HOME/Library/iTunes/Scripts/iTunes-LAME.app/Contents/Resources/"
 #add_once_to_path "/usr/local/mysql/bin"
+add_once_to_path "$HOME/homebrew/bin"
 add_once_to_path "/usr/local/sbin"
 prepend_once_to_path "/usr/local/bin"
 
@@ -116,5 +117,4 @@ export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
 if [[ -d $HOME/.rvm/ ]]; then
     PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 fi
-
 
