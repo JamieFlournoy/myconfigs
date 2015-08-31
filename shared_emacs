@@ -34,8 +34,6 @@
 ;; Show highlighting.
 (setq-default transient-mark-mode t)
 
-(set-scroll-bar-mode 'right)
-
 ;; No tilde files pls.
 (setq make-backup-files nil)
 
@@ -58,7 +56,7 @@
 
 ;; Highlight the 1st character past the column limit
 (setq load-path (append (list (expand-file-name "~/.emacs.d/column-marker")) load-path))
-(require 'column-marker)
+(autoload 'column-marker "column-marker")
 
 ;; don't automatically add new lines when scrolling down at the bottom
 ;; of a buffer
@@ -106,6 +104,8 @@
                            '(("^.\\{1011,\\}$" (0 'my-long-line-face t))))))))
 
 (if (eq system-type 'gnu/linux)
+    (set-scroll-bar-mode 'right)
+
     ;; disable middle button, because if it's a wheel mouse that button is
     ;; too sensitive so I get lots of unexpected pasted crap in the middle
     ;; of the stuff I'm editing!
@@ -171,6 +171,7 @@
 (setq auto-mode-alist (cons '("\\.rb$" . ruby-mode) auto-mode-alist))
 ;; Ruby's friend RHTML
 (setq auto-mode-alist (cons '(".rhtml$" . html-mode) auto-mode-alist))
+(setq ruby-insert-encoding-magic-comment nil)
 
 ;; JSP
 ;; (setq auto-mode-alist (cons '("\\.jsp$" . html-mode) auto-mode-alist))

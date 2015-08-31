@@ -1,4 +1,8 @@
+# -*- mode: shell-script -*-
+
 alias ll="ls -ltrA"
+
+alias e="emacs -nw"
 
 # Git related aliases
 alias gs='git status'
@@ -11,11 +15,14 @@ function gc {
 }
 alias gb='git branch -a -v'
 alias gbd='git branch -d'
+alias gc="git checkout"
 alias gcb='git checkout -b'
 alias gai='git add -i'
-alias gl='git log --graph --oneline --decorate'
+alias gl='git log --graph pretty=oneline --abrev-commit --decorate'
 alias gd='git diff'
 alias gdh='git diff HEAD'
+
+#alias at="./bin/autotest"
 
 complete -o default -o nospace -F _git_checkout gc
 complete -o default -o nospace -F _git_diff gd
@@ -28,4 +35,9 @@ if [[ -n `echo $TERMCAP | grep '|screen|'` ]]; then
 fi
 
 alias clean_tilde_files='find . -name "*~" -exec rm {} \; -or -name ".*~" -exec rm {} \;'
+alias clean_ds_store='find . -iname .DS_Store | xargs --no-run-if-empty rm'
 
+LOCAL_ALIASES=~/.bash_aliases_local
+if [ -f $LOCAL_ALIASES ]; then
+  source $LOCAL_ALIASES
+fi

@@ -1,3 +1,4 @@
+# -*- mode: conf -*-
 [user]
 	name = Jamie Flournoy
 	email = jamie@pervasivecode.com
@@ -37,3 +38,5 @@
   autosetuprebase = always
 [advice]
     statusHints = false
+[pack]
+    packSizeLimit = 500M
