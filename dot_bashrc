@@ -112,11 +112,21 @@ fi
 # a nice MySQL prompt
 export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
 
+#
+# Try and use RVM if available
+#
 # modified from what the RVM installer added to first check for RVM
 if [ -d $HOME/.rvm/ ]; then
     PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 fi
-
 if [[ "rvm is a function" != "`type -t rvm | head -n 1`" ]]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 fi
+
+#
+# Try and use rbenv if available
+#
+if [ -e /usr/local/bin/brew ]; then
+  export RBENV_ROOT=/usr/local/var/rbenv
+fi
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
