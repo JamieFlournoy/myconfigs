@@ -114,7 +114,10 @@ fi
 export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
 
 # modified from what the RVM installer added to first check for RVM
-if [[ -d $HOME/.rvm/ ]]; then
+if [ -d $HOME/.rvm/ ]; then
     PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 fi
 
+if [[ "rvm is a function" != "`type -t rvm | head -n 1`" ]]; then
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+fi
