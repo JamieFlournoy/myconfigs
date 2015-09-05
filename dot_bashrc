@@ -37,11 +37,17 @@ prepend_once_to_path "/usr/local/bin"
 
 #add_once_to_path "$HOME/Code/Android/android-sdk-mac_86/tools/"
 
-export TERM=dtterm
-
-# xterm is lame, use 256 colors.
-if [[ "$TERM" == "xterm" ]]; then
-  export TERM=xterm-256color
+if [[ "$TERM" == "dumb" ]]; then
+    color_term=0
+elif [[ "$TERM" == "linux" ]]; then
+    color_term=1
+elif [[ "$TERM" == "xterm" ]]; then
+    # xterm is lame, use 256 colors.
+    color_term=1
+    export TERM=xterm-256color
+else
+    # Assume every terminal type in >=2015 supports color
+    color_term=1
 fi
 
 function set_editor_if_exists() {
@@ -69,10 +75,11 @@ shopt -s histappend
 # Merge all shells' histories together.
 # export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-# Enable color support of ls, and also add handy aliases.
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+fi
 
+if [[ $color_term -ne 0 ]]; then
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
@@ -138,35 +145,37 @@ if [ ! -z "${BREW_BINARY}" ]; then
     fi
 fi # end of Brew things
 
-# my old favorite prompt
-#export PS1="\t \h \u \w >"
-# multiline prompt w/o git
-export PS1="\D{%a %-m/%-d} \t \u@\h \w\n\$ "
-
-# A Git-friendly prompt:
-if [[ "$TERM" == "dumb" ]]; then
-   GIT_PS1='\D{%a %-m/%-d} \t \u@\h \w $(__git_ps1 "(branch: %s)")\n\$ '
-else
-    # FYI ~/bin/show-term-colors.sh shows terminal color codes
-    # ex 47;1;37m is bold white on gray BG
-    PROMPT_COLOR="\[\033[30;47m\]"
-    PROMPT_COLOR_2="\[\033[35m\]"
-    NO_COLOR="\[\033[0m\]"
-    # My newer (8/12/2011) colored Git-friendly prompt
-    GIT_PS1=${PROMPT_COLOR}'\D{%a %-m/%-d} \t \u@\h \w $(__git_ps1 "(branch: %s)")'${NO_COLOR}'\n'${PROMPT_COLOR_2}'\$ '${NO_COLOR}
-fi
-
+found_git_completion=0
 # load the Bash completion function for Git
 function find_and_load_bash_completion() {
-if [[ -f $1 ]]; then
-  . $1
-  export PS1=${GIT_PS1}
-fi
+    if [[ $found_git_completion -ne 0 ]]; then
+        return
+    fi
+    if [[ -f $1 ]]; then
+        . $1
+        found_git_completion=1
+    fi
 }
-
 find_and_load_bash_completion /etc/bash_completion.d/git
 find_and_load_bash_completion /usr/local/etc/bash_completion.d/git-completion.bash
 find_and_load_bash_completion /usr/local/etc/bash_completion.d/git-prompt.sh
+
+if [[ $found_git_completion -ne 0 ]]; then
+    # Include the current Git branch in the prompt. The __git_ps1
+    # function definition is part of the Bash completion feature for
+    # Git, so that has to be installed in order for this to be usable.
+    show_git_branch_fn='$(__git_ps1 "(branch: %s)")'
+fi
+
+if [[ $color_term -ne 0 ]]; then
+    # Note: ~/bin/show-term-colors.sh shows terminal color codes
+    # ex 47;1;37m is bold white on gray BG
+    no_color="\[\033[0m\]"
+    prompt_color="\[\033[30;47m\]"
+    prompt_color_2="\[\033[35m\]"
+fi
+# Build the PS1 prompt, with or without the git branch, and with or without color.
+PS1=${prompt_color}'\D{%a %-m/%-d} \t \u@\h \w '"${show_git_branch_fn}"${no_color}'\n'${prompt_color_2}'\$ '${no_color}
 
 if [[ -f ~/.alias_completion_function ]]; then
     source ~/.alias_completion_function
