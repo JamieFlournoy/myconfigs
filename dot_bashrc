@@ -3,74 +3,29 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# My functions
+. ~/myconfigs/functions
+
+color_term=$(set_term)
+set_editor
+set_manpath
+configure_history
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-# make less more friendly for non-text input files, see lesspipe(1)
+# make less more friendly for non-text input files, see
+# lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-function add_once_to_path() {
-    if [[ -d "$1" ]]; then
-	if [[ "$PATH" != "*$1*" ]]; then
-            PATH=$PATH:$1
-            export PATH
-	fi
-    fi
-}
-
-function prepend_once_to_path() {
-    if [[ -d "$1" ]]; then
-	if [[ "$PATH" != "*$1*" ]]; then
-            PATH=$1:$PATH
-            export PATH
-	fi
-    fi
-}
-
 prepend_once_to_path "$HOME/bin"
-#add_once_to_path "$HOME/Library/iTunes/Scripts/iTunes-LAME.app/Contents/Resources/"
-#add_once_to_path "/usr/local/mysql/bin"
-add_once_to_path "$HOME/homebrew/bin"
-add_once_to_path "/usr/local/sbin"
 prepend_once_to_path "/usr/local/bin"
-
-#add_once_to_path "$HOME/Code/Android/android-sdk-mac_86/tools/"
-
-if [[ "$TERM" == "dumb" ]]; then
-    color_term=0
-elif [[ "$TERM" == "linux" ]]; then
-    color_term=1
-elif [[ "$TERM" == "xterm" ]]; then
-    # xterm is lame, use 256 colors.
-    color_term=1
-    export TERM=xterm-256color
-else
-    # Assume every terminal type in >=2015 supports color
-    color_term=1
-fi
-
-function set_editor_if_exists() {
-    editor_path=`which $1`
-    if [[ -n "${editor_path}" ]]; then
-	export EDITOR=${editor_path}
-    fi
-}
-# Try and set an editor, in order from least to most preferred.
-set_editor_if_exists nano
-set_editor_if_exists mg
-set_editor_if_exists emacs
-if [[ "$EDITOR" == `which emacs` ]]; then
-    export EDITOR="$EDITOR -w"
-fi
-
-# Tips from http://blog.macromates.com/2008/working-with-history-in-bash/
-# Do not store duplicate entries in history (keeps history shorter).
-export HISTCONTROL=erasedups
-# keep 50K lines (default is 1K)
-export HISTSIZE=50000
-# Append to the end of the history, instead of overwriting, on shell exit.
-shopt -s histappend
+add_once_to_path "$HOME/homebrew/bin"
+add_once_to_path "$HOME/Library/iTunes/Scripts/iTunes-LAME.app/Contents/Resources/"
+add_once_to_path "/usr/local/mysql/bin"
+add_once_to_path "/usr/local/sbin"
+add_once_to_path "$HOME/Code/Android/android-sdk-mac_86/tools/"
 
 # Merge all shells' histories together.
 # export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
@@ -89,21 +44,6 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-if [ $MANPATH ]; then
-    function add_once_to_manpath() {
-	if [[ -d "$1" ]]; then
-            if [[ "$MANPATH" != "*$1*" ]]; then
-		MANPATH=$MANPATH:$1
-            fi
-	fi
-    }
-    add_once_to_manpath "/usr/local/man"
-    add_once_to_manpath "/opt/local/man"
-else
-    MANPATH=/usr/share/man:/usr/bin/man:/usr/local/man:/usr/local/share/man:/opt/local/man
-fi
-export MANPATH
-
 if [ -f ~/.bash_aliases ]; then
  . ~/.bash_aliases
 fi
@@ -116,49 +56,20 @@ if [ -f ~/.bash_aliases_jamie ]; then
  . ~/.bash_aliases_jamie
 fi
 
-# See if the excellent Homebrew pakage manager for MacOS
-# (http://mxcl.github.com/homebrew/) is installed. If so,
-# configure this shell for some packages that might be installed
-BREW_BINARY=`which brew`
-if [ ! -z "${BREW_BINARY}" ]; then
-    BREW_PREFIX=`brew --prefix`
-    #
-    # If the bash_completion package is installed, use it
-    # it provides completion for Git and SSH if you have
-    # also installed the Brew versions of those programs
-    #
-    BASH_COMPLETION_SCRIPT=${BREW_PREFIX}/etc/bash_completion
-    if [ -f ${BASH_COMPLETION_SCRIPT} ]; then
-	. ${BASH_COMPLETION_SCRIPT}
-    fi
+brew_binary=$(configure_homebrew)
 
-    #
-    # for Go (a programming language golang.org)
-    #
-    BREW_GO=`brew --prefix go`
-    # $? (exit code) should equal 0 if that succeeded
-    if (( $? && 0 )); then
-	export GOOS=darwin
-	export GOARCH=amd64
-	export GOROOT=${BREW_GO}
-	export GOBIN=${BREW_PREFIX}/bin/
-    fi
-fi # end of Brew things
+git_function_files=$(find_git_bash_functions)
+for f in $git_function_files
+do
+    . $f
+done
 
-found_git_completion=0
-# load the Bash completion function for Git
-function find_and_load_bash_completion() {
-    if [[ $found_git_completion -ne 0 ]]; then
-        return
-    fi
-    if [[ -f $1 ]]; then
-        . $1
-        found_git_completion=1
-    fi
-}
-find_and_load_bash_completion /etc/bash_completion.d/git
-find_and_load_bash_completion /usr/local/etc/bash_completion.d/git-completion.bash
-find_and_load_bash_completion /usr/local/etc/bash_completion.d/git-prompt.sh
+if [[ -n $git_function_files ]]; then
+    found_git_completion=1
+else
+    echo "Could not find Git bash functions."
+    found_git_completion=0
+fi
 
 if [[ $found_git_completion -ne 0 ]]; then
     # Include the current Git branch in the prompt. The __git_ps1
@@ -192,19 +103,22 @@ export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
 #
 # Try and use RVM if available
 #
-# modified from what the RVM installer added to first check for RVM
-if [ -d $HOME/.rvm/ ]; then
-    PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-fi
-if [[ "rvm is a function" != "`type -t rvm | head -n 1`" ]]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+enable_rvm=1
+if [[ $enable_rvm ]]; then
+    # modified from what the RVM installer added to first check for RVM
+    if [ -d $HOME/.rvm/ ]; then
+        PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+    fi
+    if [[ "rvm is a function" != "`type -t rvm | head -n 1`" ]]; then
+        [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    fi
 fi
 
 #
 # Try and use rbenv if available
 #
 if [ -e /usr/local/bin/brew ]; then
-  export RBENV_ROOT=/usr/local/var/rbenv
+    export RBENV_ROOT=/usr/local/var/rbenv
 fi
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
