@@ -1,0 +1,26 @@
+#!/bin/bash
+
+function add_once_to_path() {
+    if [[ -d "$1" ]]; then
+	if [[ "$PATH" != "*$1*" ]]; then
+            PATH=$PATH:$1
+            export PATH
+	fi
+    fi
+}
+
+function prepend_once_to_path() {
+    if [[ -d "$1" ]]; then
+	if [[ "$PATH" != "*$1*" ]]; then
+            PATH=$1:$PATH
+            export PATH
+	fi
+    fi
+}
+
+function set_editor_if_exists() {
+    editor_path=`which $1`
+    if [[ -n "${editor_path}" ]]; then
+	export EDITOR=${editor_path}
+    fi
+}
