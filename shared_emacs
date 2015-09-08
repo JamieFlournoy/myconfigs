@@ -56,7 +56,7 @@
 
 ;; Highlight the 1st character past the column limit
 (setq load-path (append (list (expand-file-name "~/.emacs.d/column-marker")) load-path))
-(autoload 'column-marker "column-marker")
+(require 'column-marker)
 
 ;; don't automatically add new lines when scrolling down at the bottom
 ;; of a buffer
