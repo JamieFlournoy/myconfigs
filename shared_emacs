@@ -1,5 +1,8 @@
 ;; -*- mode: Emacs-Lisp -*-
 
+(if (file-exists-p "~/.emacs_local_requires")
+    (load-file "~/.emacs_local_requires"))
+
 ;;
 ;;
 ;; Basic things
