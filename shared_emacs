@@ -58,6 +58,11 @@
 (setq load-path (append (list (expand-file-name "~/.emacs.d/column-marker")) load-path))
 (autoload 'column-marker "column-marker")
 
+;; Highlight trailing whitespace in red.
+(setq whitespace-style (append (list 'face 'trailing)))
+(autoload 'whitespace-mode "whitespace" "Toggle whitespace visualization." t)
+(global-whitespace-mode t)
+
 ;; don't automatically add new lines when scrolling down at the bottom
 ;; of a buffer
 (setq next-line-add-newlines nil)
