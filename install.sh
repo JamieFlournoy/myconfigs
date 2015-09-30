@@ -39,7 +39,7 @@ function install_copy {
 install_symlink bashrc
 install_symlink emacs
 
-if [[ `uname` -eq 'Darwin' ]]; then
+if [[ `uname` == 'Darwin' ]]; then
     install_copy gitconfig_mac
     preserve_file_if_exists $HOME/.gitconfig
     echo 'Renaming ~/.gitconfig_mac to ~/.gitconfig'
