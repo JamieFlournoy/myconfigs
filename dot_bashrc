@@ -74,17 +74,18 @@ do
     . $f
 done
 
+have_git_ps1_function=0
 if [[ -n $git_function_files ]]; then
-    found_git_completion=1
+    type -t __git_ps1 | grep -qE 'shell|function' && have_git_ps1_function=1
+    if [[ $have_git_ps1_function -eq 0 ]]; then
+        echo "Loaded git completion but not prompt functions."
+    fi
 else
     echo "Could not find Git bash functions."
-    found_git_completion=0
 fi
 
-if [[ $found_git_completion -ne 0 ]]; then
-    # Include the current Git branch in the prompt. The __git_ps1
-    # function definition is part of the Bash completion feature for
-    # Git, so that has to be installed in order for this to be usable.
+if [[ $have_git_ps1_function -ne 0 ]]; then
+    # Include the current Git branch in the prompt.
     show_git_branch_fn='$(__git_ps1 "(branch: %s)")'
 fi
 
