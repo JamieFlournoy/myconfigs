@@ -58,6 +58,16 @@ fi
 
 brew_binary=$(configure_homebrew)
 
+if [[ -f $brew_binary ]]; then
+    brewDiffHighlight="$($brew_binary --prefix)/share/git-core/contrib/diff-highlight/diff-highlight"
+    if [[ -f $brewDiffHighlight ]] && [[ ! -e ~/bin/diff-highlight ]]; then
+        if [[ ! -d ~/bin ]]; then
+            /bin/mkdir ~/bin
+        fi
+        /bin/ln -s $brewDiffHighlight ~/bin/diff-highlight
+    fi
+fi
+
 git_function_files=$(find_git_bash_functions)
 for f in $git_function_files
 do
