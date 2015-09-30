@@ -1,0 +1,15 @@
+# -*- mode: conf -*-
+
+[include]
+    path = shared_gitconfig
+
+# Nicer diff formatting (from https://github.com/paulirish/dotfiles)
+# (uses functions definedin ~/myconfig/functions)
+[core]
+  pager = bash -lc 'diff-highlight | strip_diff_leading_symbols | less -r' -
+
+[color "diff-highlight"]
+  oldNormal = "red"
+  oldHighlight = "black red"
+  newNormal = "green"
+  newHighlight = "black green"

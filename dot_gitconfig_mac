@@ -1,0 +1,6 @@
+# -*- mode: conf -*-
+
+[include]
+# "~" doesn't work [yet], but this is ~/.gitconfig and relative paths work
+    path = myconfigs/shared_gitconfig_mac
+

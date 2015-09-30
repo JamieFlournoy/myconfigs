@@ -38,7 +38,16 @@ function install_copy {
 
 install_symlink bashrc
 install_symlink emacs
-install_copy gitconfig
+
+if [[ `uname` -eq 'Darwin' ]]; then
+    install_copy gitconfig_mac
+    preserve_file_if_exists $HOME/.gitconfig
+    echo 'Renaming ~/.gitconfig_mac to ~/.gitconfig'
+    /bin/mv $HOME/.gitconfig_mac $HOME/.gitconfig
+else
+    install_copy gitconfig
+fi
+
 install_symlink gitignore
 install_symlink screenrc
 install_symlink tmux.conf

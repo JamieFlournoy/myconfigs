@@ -7,7 +7,7 @@
 	ci = commit
 	co = checkout
 	lol = log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s %C(green)%an %C(bold black)%cr%C(reset)' --abbrev-commit --date=relative
-  
+
 [merge]
 	tool = opendiff
 [core]
@@ -40,3 +40,4 @@
     statusHints = false
 [pack]
     packSizeLimit = 500M
+
