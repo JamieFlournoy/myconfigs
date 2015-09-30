@@ -177,3 +177,32 @@ function check_installed_git_completion() {
         echo "    brew install git bash-completion"
     fi
 }
+
+
+#
+# Functions that tidy up the formatting of Git diffs so they're easier to read.
+#
+# Cribbed from https://github.com/paulirish/dotfiles
+
+# This version only works on Mac OS X Yosemite
+function strip_diff_leading_symbols(){
+    color_code_regex=$'(\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K])'
+
+    # simplify the unified patch diff header
+    sed -E "s/^($color_code_regex)diff --git .*$//g" | \
+        sed -E "s/^($color_code_regex)index .*$/\
+\1$(rule)/g" | \
+        sed -E "s/^($color_code_regex)\+\+\+(.*)$/\1\+\+\+\5\\
+\1$(rule)/g"
+        # I don't like this so I disabled it:
+        # actually strips the leading symbols
+        #sed -E "s/^($color_code_regex)[\+\-]/\1 /g"
+}
+
+## Print a horizontal rule
+rule() {
+    printf "%$(tput cols)s\n"|tr " " "─"}}
+}
+
+export -f strip_diff_leading_symbols
+export -f rule
