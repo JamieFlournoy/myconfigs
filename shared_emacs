@@ -144,6 +144,9 @@
 (autoload 'css-mode "css-mode")
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
 
+;; C-mode for Arduino
+(add-to-list 'auto-mode-alist '("\\.ino$" . c-mode))
+
 ;; Java
 ;; In Java mode, hava column-mark activate after 100 columns.
 (add-hook 'java-mode-hook (lambda () (interactive) (column-marker-1 100)))
