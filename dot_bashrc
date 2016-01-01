@@ -68,6 +68,10 @@ if [[ -f $brew_binary ]]; then
     fi
 fi
 
+# TODO: use diff-highlight on Linux, which is here:
+# /usr/share/doc/git/contrib/diff-highlight/diff-highlight
+
+
 git_function_files=$(find_git_bash_functions)
 for f in $git_function_files
 do
