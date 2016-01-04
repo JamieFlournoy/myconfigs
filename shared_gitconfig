@@ -40,3 +40,12 @@
     statusHints = false
 [pack]
     packSizeLimit = 500M
+
+
+# new 2015-12-17
+# from http://stackoverflow.com/questions/11133290/git-merging-using-meld
+[merge]
+tool = mymeld
+conflictstyle = diff3
+[mergetool "mymeld"]
+cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $BASE $REMOTE --output $MERGED
