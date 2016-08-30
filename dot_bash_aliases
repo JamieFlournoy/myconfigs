@@ -18,7 +18,7 @@ alias gbd='git branch -d'
 alias gc="git checkout"
 alias gcb='git checkout -b'
 alias gai='git add -i'
-alias gl='git log --graph pretty=oneline --abrev-commit --decorate'
+alias gl='git log --graph --pretty=oneline --abbrev-commit --decorate'
 alias gd='git diff'
 alias gdh='git diff HEAD'
 
@@ -41,3 +41,5 @@ LOCAL_ALIASES=~/.bash_aliases_local
 if [ -f $LOCAL_ALIASES ]; then
   source $LOCAL_ALIASES
 fi
+
+alias unhose='echo -e "\033c"'
