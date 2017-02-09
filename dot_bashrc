@@ -52,10 +52,10 @@ function set_editor_if_exists() {
 }
 # Try and set an editor, in order from least to most preferred.
 set_editor_if_exists nano
-set_editor_if_exists mg
 set_editor_if_exists emacs
+set_editor_if_exists mg
 if [[ "$EDITOR" == `which emacs` ]]; then
-    export EDITOR="$EDITOR -nw"
+    export EDITOR="$EDITOR -nw -Q"
 fi
 
 # Tips from http://blog.macromates.com/2008/working-with-history-in-bash/
