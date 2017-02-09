@@ -43,3 +43,4 @@ if [ -f $LOCAL_ALIASES ]; then
 fi
 
 alias unhose='echo -e "\033c"'
+alias webserver_here="twistd -no web --path=."
