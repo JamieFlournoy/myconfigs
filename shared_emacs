@@ -58,6 +58,11 @@
 (setq load-path (append (list (expand-file-name "~/.emacs.d/column-marker")) load-path))
 (require 'column-marker)
 
+;; Highlight trailing whitespace in red.
+(setq whitespace-style (append (list 'face 'trailing)))
+(autoload 'whitespace-mode "whitespace" "Toggle whitespace visualization." t)
+(global-whitespace-mode t)
+
 ;; don't automatically add new lines when scrolling down at the bottom
 ;; of a buffer
 (setq next-line-add-newlines nil)
@@ -87,6 +92,7 @@
  '(fixed-pitch ((t nil)))
  '(font-lock-comment-face ((t (:foreground "green"))))
  '(font-lock-string-face ((t (:foreground "yellow"))))
+ '(font-lock-builtin-face ((t (:foreground "cyan"))))
  '(font-lock-variable-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "red"))))
  '(my-long-line-face ((((class color)) (:underline t :weight bold))) t)
  '(sh-heredoc ((((class color) (background light)) (:foreground "purple4")))))
@@ -141,6 +147,9 @@
 ;; CSS
 (autoload 'css-mode "css-mode")
 (add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
+
+;; C-mode for Arduino
+(add-to-list 'auto-mode-alist '("\\.ino$" . c-mode))
 
 ;; Java
 ;; In Java mode, hava column-mark activate after 100 columns.

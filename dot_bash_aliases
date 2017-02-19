@@ -41,6 +41,5 @@ LOCAL_ALIASES=~/.bash_aliases_local
 if [ -f $LOCAL_ALIASES ]; then
   source $LOCAL_ALIASES
 fi
-
 alias unhose='echo -e "\033c"'
 alias webserver_here="twistd -no web --path=."

@@ -1,0 +1,213 @@
+#!/bin/bash
+# -*- mode: shell-script -*-
+
+function set_term() {
+    color_term=0
+    if [[ "$TERM" == "linux" ]]; then
+        color_term=1
+    elif [[ "$TERM" == "xterm" ]]; then
+        # xterm is lame, use 256 colors.
+        color_term=1
+        export TERM=xterm-256color
+    else
+        # Assume every terminal type in >=2015 supports color
+        color_term=1
+    fi
+    echo $color_term
+}
+
+function add_once_to_path() {
+    if [[ -d "$1" ]]; then
+	if [[ "$PATH" != "*$1*" ]]; then
+            export PATH=$PATH:$1
+	fi
+    fi
+}
+
+function prepend_once_to_path() {
+    if [[ -d "$1" ]]; then
+	if [[ "$PATH" != "*$1*" ]]; then
+            export PATH=$1:$PATH
+	fi
+    fi
+}
+
+function configure_history() {
+    # Tips from
+    # http://blog.macromates.com/2008/working-with-history-in-bash/
+    # Do not store duplicate entries in history (keeps history
+    # shorter).
+    export HISTCONTROL=erasedups
+    # Keep 50K lines (default is 1K).
+    export HISTSIZE=50000
+    # Append to the end of the history, instead of overwriting, on
+    # shell exit.
+    shopt -s histappend
+}
+
+# Given a list of paths as arguments, iterate over them and return the
+# first one that exists.
+function first_extant() {
+    for path in $@
+    do
+        if [[ -e $path ]]; then
+            echo $path
+            break
+        fi
+    done
+}
+
+# Given a list of commands as arguments, iterate over them and return
+# the first one for which `which foo` returns a path.
+function first_extant_which() {
+    for cmd in $@
+    do
+        cmd_path=`which $cmd`
+        if [[ ! -z "$cmd_path" ]]; then
+           echo $cmd_path
+           break
+        fi
+    done
+}
+
+function set_editor() {
+    editor_path=$(first_extant_which /usr/local/bin/emacs emacs mg nano)
+    if [[ -n "${editor_path}" ]]; then
+	export EDITOR=${editor_path}
+    fi
+    # If EDITOR is Emacs, don't launch it as its own X11 window;
+    # launch it in character mode.
+    if [[ $EDITOR == *"emacs" ]]; then
+        export EDITOR=$EDITOR\ -nw
+    fi
+}
+
+function set_manpath() {
+    function add_once_to_manpath() {
+        if [[ -d "$1" ]]; then
+            if [[ "$MANPATH" != "*$1*" ]]; then
+	        MANPATH=$MANPATH:$1
+            fi
+        fi
+    }
+    if [ $MANPATH ]; then
+        add_once_to_manpath "/usr/local/man"
+        add_once_to_manpath "/opt/local/man"
+    else
+        MANPATH=/usr/share/man:/usr/bin/man:/usr/local/man:/usr/local/share/man:/opt/local/man
+    fi
+    export MANPATH
+}
+
+# Find the Bash completion function and prompt function files for Git.
+# The caller must source them.
+function find_git_bash_functions() {
+    local_completion_d=/usr/local/etc/bash_completion.d
+    # see http://www.linuxjournal.com/content/bash-arrays
+    completion_dirs=(
+        /etc/bash_completion.d/git 
+        $local_completion_d/git-completion.bash 
+    )
+    git_completion=$(first_extant ${completion_dirs[*]})
+    if [[ -e $git_completion ]]; then
+        echo $git_completion
+        # In newer versions of Git, completion and the prompt function
+        # are split into separate files. So we need the prompt function
+        # too.
+        if [[ $git_completion == *"git-completion.bash" ]]; then
+            git_prompt_functions=$local_completion_d/git-prompt.sh
+            echo $git_prompt_functions
+        fi
+    fi
+    # Workaround for Ubuntu Trusty Tahr: git-prompt is all there is
+    etc_git_prompt=/etc/bash_completion.d/git-prompt
+    if [[ -z $git_completion && -e $etc_git_prompt ]]; then
+        echo $etc_git_prompt
+    fi
+}
+
+function configure_homebrew() {
+    # See if the excellent Homebrew pakage manager for MacOS
+    # (http://mxcl.github.com/homebrew/) is installed. If so,
+    # configure this shell for some packages that might be installed
+    brew_binary=`which brew`
+    if [ ! -z "${brew_binary}" ]; then
+        brew_prefix=`$brew_binary --prefix`
+        #
+        # If the bash_completion package is installed, use it it
+        # provides completion for Git and SSH if you have also
+        # installed the Brew versions of those programs
+        #
+        bash_completion_script=${brew_prefix}/etc/bash_completion
+        if [ -f ${bash_completion_script} ]; then
+	    . ${bash_completion_script}
+        fi
+        #
+        # For Go (a programming language golang.org):
+        #
+        brew_go=`$brew_binary --prefix go`
+        # $? (exit code) should equal 0 if that succeeded
+        if (( $? && 0 )); then
+	    export GOOS=darwin
+	    export GOARCH=amd64
+	    export GOROOT=${brew_go}
+	    export GOBIN=${brew_prefix}/bin/
+        fi
+
+        # return value
+        echo $brew_binary
+    fi # end of Brew things
+}
+
+function check_installed_emacs() {
+    emacs_major_version=$(emacs --version | head -1 | colrm 1 10 | colrm 3)
+    if [[ $emacs_major_version -lt 24 ]]; then
+        echo "The installed Emacs is older than version 24."
+        echo "On MacOS X:"
+        echo "    brew update"
+        echo "    brew install emacs --with-cocoa"
+        echo
+        echo "On Ubuntu:"
+        echo "    sudo apt-get update"
+        echo "    sudo apt-get install emacs24"
+    fi
+}
+
+function check_installed_git_completion() {
+    git_function_files=$(find_git_bash_functions)
+    if [[ -z "$git_function_files" ]]; then
+        echo "Bash completion for Git commands is missing."
+        echo "On MacOS X:"
+        echo "    brew update"
+        echo "    brew install git bash-completion"
+    fi
+}
+
+
+#
+# Functions that tidy up the formatting of Git diffs so they're easier to read.
+#
+# Cribbed from https://github.com/paulirish/dotfiles
+
+# This version only works on Mac OS X Yosemite
+function strip_diff_leading_symbols(){
+    color_code_regex=$'(\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K])'
+
+    # simplify the unified patch diff header
+    sed -E "s/^($color_code_regex)diff --git .*$//g" | \
+        sed -E "s/^($color_code_regex)index .*$/\
+\1$(rule)/g" | \
+        sed -E "s/^($color_code_regex)\+\+\+(.*)$/\1\+\+\+\5\\
+\1$(rule)/g"
+        # I don't like this so I disabled it:
+        # actually strips the leading symbols
+        #sed -E "s/^($color_code_regex)[\+\-]/\1 /g"
+}
+
+## Print a horizontal rule
+rule() {
+    printf "%$(tput cols)s\n"|tr " " "─"}}
+}
+
+export -f strip_diff_leading_symbols
+export -f rule

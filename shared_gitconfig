@@ -7,7 +7,7 @@
 	ci = commit
 	co = checkout
 	lol = log --graph --pretty=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s %C(green)%an %C(bold black)%cr%C(reset)' --abbrev-commit --date=relative
-  
+
 [merge]
 	tool = opendiff
 [core]
@@ -21,9 +21,9 @@
 	default = matching
 [log]
 	date = local
-[branch "master"]
-	remote = origin
-	merge = refs/heads/master
+#[branch "master"]
+#	remote = origin
+#	merge = refs/heads/master
 
 # new 2011-04-26 from
 # http://stackoverflow.com/questions/267761/what-does-your-gitconfig-contain
@@ -40,7 +40,6 @@
     statusHints = false
 [pack]
     packSizeLimit = 500M
-
 
 # new 2015-12-17
 # from http://stackoverflow.com/questions/11133290/git-merging-using-meld
