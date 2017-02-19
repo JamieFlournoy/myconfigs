@@ -21,9 +21,9 @@
 	default = matching
 [log]
 	date = local
-[branch "master"]
-	remote = origin
-	merge = refs/heads/master
+#[branch "master"]
+#	remote = origin
+#	merge = refs/heads/master
 
 # new 2011-04-26 from
 # http://stackoverflow.com/questions/267761/what-does-your-gitconfig-contain
