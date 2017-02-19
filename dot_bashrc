@@ -56,15 +56,19 @@ if [ -f ~/.bash_aliases_jamie ]; then
  . ~/.bash_aliases_jamie
 fi
 
-brew_binary=$(configure_homebrew)
-
-if [[ -f $brew_binary ]]; then
-    brewDiffHighlight="$($brew_binary --prefix)/share/git-core/contrib/diff-highlight/diff-highlight"
-    if [[ -f $brewDiffHighlight ]] && [[ ! -e ~/bin/diff-highlight ]]; then
-        if [[ ! -d ~/bin ]]; then
-            /bin/mkdir ~/bin
+# If homebrew is installed, try to enable diff-highlight.
+if which brew > /dev/null; then
+    if [[ ! -e ~/bin/diff-highlight ]]; then
+        brew_binary=$(configure_homebrew)
+        if [[ -f $brew_binary ]]; then
+            brewDiffHighlight="$($brew_binary --prefix)/share/git-core/contrib/diff-highlight/diff-highlight"
+            if [[ -f $brewDiffHighlight ]]; then
+                if [[ ! -d ~/bin ]]; then
+                    /bin/mkdir ~/bin
+                fi
+                /bin/ln -s $brewDiffHighlight ~/bin/diff-highlight
+            fi
         fi
-        /bin/ln -s $brewDiffHighlight ~/bin/diff-highlight
     fi
 fi
 
