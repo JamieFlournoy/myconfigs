@@ -25,7 +25,37 @@ add_once_to_path "$HOME/homebrew/bin"
 add_once_to_path "$HOME/Library/iTunes/Scripts/iTunes-LAME.app/Contents/Resources/"
 add_once_to_path "/usr/local/mysql/bin"
 add_once_to_path "/usr/local/sbin"
-add_once_to_path "$HOME/Code/Android/android-sdk-mac_86/tools/"
+
+#add_once_to_path "$HOME/Code/Android/android-sdk-mac_86/tools/"
+
+export TERM=dtterm
+
+# xterm is lame, use 256 colors.
+if [[ "$TERM" == "xterm" ]]; then
+  export TERM=xterm-256color
+fi
+
+function set_editor_if_exists() {
+    editor_path=`which $1`
+    if [[ -n "${editor_path}" ]]; then
+	export EDITOR=${editor_path}
+    fi
+}
+# Try and set an editor, in order from least to most preferred.
+set_editor_if_exists nano
+set_editor_if_exists emacs
+set_editor_if_exists mg
+if [[ "$EDITOR" == `which emacs` ]]; then
+    export EDITOR="$EDITOR -nw -Q"
+fi
+
+# Tips from http://blog.macromates.com/2008/working-with-history-in-bash/
+# Do not store duplicate entries in history (keeps history shorter).
+export HISTCONTROL=erasedups
+# keep 50K lines (default is 1K)
+export HISTSIZE=50000
+# Append to the end of the history, instead of overwriting, on shell exit.
+shopt -s histappend
 
 # Merge all shells' histories together.
 # export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"

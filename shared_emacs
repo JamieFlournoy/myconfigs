@@ -56,7 +56,7 @@
 
 ;; Highlight the 1st character past the column limit
 (setq load-path (append (list (expand-file-name "~/.emacs.d/column-marker")) load-path))
-(autoload 'column-marker "column-marker")
+(require 'column-marker)
 
 ;; Highlight trailing whitespace in red.
 (setq whitespace-style (append (list 'face 'trailing)))
@@ -126,14 +126,18 @@
 ;;
 ;;
 
-;; JavaScript
-(setq load-path (append (list (expand-file-name "~/.emacs.d/js2")) load-path))
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-;; In JS2 mode, have column-marker activate after 80 columns.
-(add-hook 'js2-mode-hook (lambda () (interactive) (column-marker-1 80)))
-(add-hook 'js2-mode-hook (lambda () (interactive) (set-fill-column 80)))
-(setq js2-mode-escape-quotes nil)
+;; only use js2-mode when not using the google-emacs package.
+(unless (file-exists-p "~/gconfigs/.emacs_local")
+  ;; JavaScript
+  (setq load-path (append (list (expand-file-name "~/.emacs.d/js2")) load-path))
+  (autoload 'js2-mode "js2" nil t)
+  (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+  ;; In JS2 mode, have column-marker activate after 80 columns.
+  (add-hook 'js2-mode-hook (lambda () (interactive) (column-marker-1 80)))
+  (add-hook 'js2-mode-hook (lambda () (interactive) (set-fill-column 80)))
+  (setq js2-mode-escape-quotes nil)
+  )
+
 
 ;; Closure templates
 (setq load-path (append (list (expand-file-name "~/.emacs.d/soy")) load-path))
@@ -173,6 +177,9 @@
 ;; for html-font.el
 ;; (add-hook 'html-helper-load-hook '(lambda () (require 'html-font)))
 
+;; Markdown
+(add-hook 'markdown-mode-hook (lambda () (interactive) (column-marker-1 80)))
+(add-hook 'markdown-mode-hook (lambda () (interactive) (set-fill-column 80)))
 
 ;; Ruby
 (setq load-path (append (list (expand-file-name "~/.emacs.d/ruby-mode")) load-path))
