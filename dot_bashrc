@@ -153,7 +153,7 @@ export MYSQL_PS1="\r:\m:\s \h \d \nmysql>"
 # Try and use RVM if available
 #
 enable_rvm=1
-if [[ $enable_rvm ]]; then
+if [[ $enable_rvm == 1 ]]; then
     # modified from what the RVM installer added to first check for RVM
     if [ -d $HOME/.rvm/ ]; then
         PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
@@ -166,10 +166,10 @@ fi
 #
 # Try and use rbenv if available
 #
-if [ -e /usr/local/bin/brew ]; then
-    export RBENV_ROOT=/usr/local/var/rbenv
-fi
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+#if [ -e /usr/local/bin/brew ]; then
+#    export RBENV_ROOT=/usr/local/var/rbenv
+#fi
+#if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 if [[ -f ~/.bashrc_local ]]; then
     . ~/.bashrc_local
