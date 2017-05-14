@@ -59,7 +59,7 @@
 (require 'column-marker)
 ;; Installing the above: get from
 ;;    https://www.emacswiki.org/emacs/download/column-marker.el
-;; Put a t~/.emacs.d/column-marker/column-marker.el
+;; Put at ~/.emacs.d/column-marker/column-marker.el
 ;; Then m-X byte-compile-file that to make ~/.emacs.d/column-marker/column-marker.elc
 
 ;; Highlight trailing whitespace in red.
