@@ -53,3 +53,4 @@ install_symlink screenrc
 install_symlink tmux.conf
 install_symlink bash_aliases
 install_symlink bash_profile
+install_symlink irbrc
