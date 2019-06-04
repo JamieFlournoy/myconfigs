@@ -21,6 +21,7 @@ alias gai='git add -i'
 alias gl='git log --graph --pretty=oneline --abbrev-commit --decorate'
 alias gd='git diff'
 alias gdh='git diff HEAD'
+alias ebg="emacs build.gradle &"
 
 #alias at="./bin/autotest"
 
