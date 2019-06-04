@@ -283,6 +283,15 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
+
+;;(setq package-list '(groovy-mode))
+;;(unless package-archive-contents
+;;  (package-refresh-contents))
+;;(dolist (package package-list)
+;;  (unless (package-installed-p package)
+;;        (package-install package)))
+
+
 ;;LOCAL HOOKS SECTION - note this section should be last to allow an
 ;;.emacs_local file to override the .emacs.  The .emacs_local file should
 ;;contain anything specific to a particular environment/platform/machine.
