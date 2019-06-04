@@ -143,6 +143,10 @@
 ;;
 ;;
 
+(if (file-exists-p "~/.emacs.d/graphviz-dot-mode.el")
+  (load-file "~/.emacs.d/graphviz-dot-mode.el")
+  )
+
 ;; only use js2-mode when not using the google-emacs package.
 (unless (file-exists-p "~/gconfigs/.emacs_local")
   ;; JavaScript
