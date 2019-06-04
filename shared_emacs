@@ -279,6 +279,10 @@
     (scroll-behind (prefix-numeric-value n))
     (previous-line 1)))
 
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
 ;;LOCAL HOOKS SECTION - note this section should be last to allow an
 ;;.emacs_local file to override the .emacs.  The .emacs_local file should
 ;;contain anything specific to a particular environment/platform/machine.
