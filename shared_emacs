@@ -222,6 +222,10 @@
 ;; PHP
 ;;(load-library "php-mode-099")
 
+;; Cucumber feature files
+(add-hook 'feature-mode-hook (lambda () (interactive) (column-marker-1 84)))
+(add-hook 'feature-mode-hook (lambda () (interactive) (set-fill-column 84)))
+
 
 (require 'generic-x)
 (add-to-list 'generic-extras-enable-list 'javascript-generic-mode)
