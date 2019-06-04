@@ -174,3 +174,14 @@ fi
 if [[ -f ~/.bashrc_local ]]; then
     . ~/.bashrc_local
 fi
+
+#GPG_TTY=$(tty)
+#export GPG_TTY
+[ -f ~/.gnupg/gpg-agent.env ] && source ~/.gnupg/gpg-agent.env
+if [ -S "${GPG_AGENT_INFO%%:*}" ]; then
+    export GPG_AGENT_INFO
+else
+    eval $(gpg-agent --daemon --log-file /tmp/gpg.log --pinentry-program /usr/local/bin/pinentry-mac)
+fi
+
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
