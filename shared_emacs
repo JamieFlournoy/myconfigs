@@ -293,6 +293,16 @@
 ;;  (unless (package-installed-p package)
 ;;        (package-install package)))
 
+(setq todotxt-file "~/todotxt/todo.txt")
+(add-hook 'todotxt-mode-hook
+          (function
+           (lambda()
+;;             (set-face-foreground 'todotxt-priority-a-face "magenta")
+             (text-scale-adjust 2)
+             )
+           )
+          )
+
 
 ;;LOCAL HOOKS SECTION - note this section should be last to allow an
 ;;.emacs_local file to override the .emacs.  The .emacs_local file should
