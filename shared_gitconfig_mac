@@ -13,3 +13,10 @@
   oldHighlight = "black red"
   newNormal = "green"
   newHighlight = "black green"
+
+# Meld is not available for Mac.
+[merge]
+  tool = kdiff3
+  conflictstyle = diff3
+#[mergetool "kdiff3"]
+#    path = /Applications/kdiff3.app/Contents/MacOS/kdiff3

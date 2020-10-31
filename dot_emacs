@@ -6,7 +6,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (typescript-mode js2-mode feature-mode groovy-mode))))
+ '(package-selected-packages
+   (quote
+    (protobuf-mode yaml-mode typescript-mode todotxt rust-mode js2-mode groovy-mode feature-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

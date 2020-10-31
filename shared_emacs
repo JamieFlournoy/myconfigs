@@ -87,10 +87,6 @@
 
 
 
-;; custom-set-faces was added by Custom.
-;; If you edit it by hand, you could mess it up, so be careful.
-;; Your init file should contain only one such instance.
-;; If there is more than one, they won't work right.
 (if (display-graphic-p)
     (if (eq system-type 'darwin)
         (custom-set-faces
@@ -113,6 +109,7 @@
        '(sh-heredoc ((((class color) (background light)) (:foreground "purple4")))))
       )
 )
+
 
 ;; (set-face-foreground 'font-lock-comment-face "DarkOliveGreen3")
 ;; (set-face-foreground 'font-lock-string-face  "purple4")
@@ -280,8 +277,10 @@
     (previous-line 1)))
 
 (require 'package)
+;;(add-to-list 'package-archives
+;;             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+             '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 ;;(setq package-list '(groovy-mode))
@@ -290,6 +289,16 @@
 ;;(dolist (package package-list)
 ;;  (unless (package-installed-p package)
 ;;        (package-install package)))
+
+(setq todotxt-file "~/todotxt/todo.txt")
+(add-hook 'todotxt-mode-hook
+          (function
+           (lambda()
+;;             (set-face-foreground 'todotxt-priority-a-face "magenta")
+             (text-scale-adjust 2)
+             )
+           )
+          )
 
 
 ;;LOCAL HOOKS SECTION - note this section should be last to allow an
