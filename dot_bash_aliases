@@ -15,12 +15,17 @@ function gc {
 }
 alias gb='git branch -a -v'
 alias gbd='git branch -d'
+
 alias gc="git checkout"
 alias gcb='git checkout -b'
+
 alias gai='git add -i'
 alias gl='git log --graph --pretty=oneline --abbrev-commit --decorate'
+
 alias gd='git diff'
 alias gdh='git diff HEAD'
+alias gdc='git diff --cached'
+
 alias ebg="emacs build.gradle &"
 
 #alias at="./bin/autotest"
