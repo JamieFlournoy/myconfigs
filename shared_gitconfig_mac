@@ -18,5 +18,10 @@
 [merge]
   tool = kdiff3
   conflictstyle = diff3
-#[mergetool "kdiff3"]
-#    path = /Applications/kdiff3.app/Contents/MacOS/kdiff3
+
+[merge]
+  tool = p4merge
+[mergetool "p4merge"]
+  prompt = false
+  keepbackup = false
+  path = /Users/jamieflournoy/bin/p4merge
