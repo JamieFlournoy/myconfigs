@@ -9,16 +9,29 @@
  '(package-selected-packages
    (quote
     (protobuf-mode yaml-mode typescript-mode todotxt rust-mode js2-mode groovy-mode feature-mode))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "undefined" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "Monaco"))))
- '(fixed-pitch ((t nil)))
- '(font-lock-builtin-face ((t (:foreground "cyan"))))
- '(font-lock-comment-face ((t (:foreground "green"))))
- '(font-lock-string-face ((t (:foreground "yellow"))))
- '(font-lock-variable-name-face ((((class color) (min-colors 88) (background dark)) (:foreground "red"))))
- '(my-long-line-face ((((class color)) (:underline t :weight bold))) t)
- '(sh-heredoc ((((class color) (background light)) (:foreground "purple4")))))
+
+(if (display-graphic-p)
+    (custom-set-faces
+     '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "Monaco"))))
+     '(fixed-pitch ((t nil)))
+     '(font-lock-builtin-face ((t (:foreground "turquoise3"))))
+     '(font-lock-comment-face ((t (:foreground "green4" :weight bold))))
+     '(font-lock-string-face ((t (:foreground "DarkKhaki"))))
+     '(font-lock-keyword-face ((t (:foreground "magenta3"))))
+     '(font-lock-variable-name-face ((t (:foreground "red2"))))
+     '(my-long-line-face ((((class color)) (:underline t :weight bold))) t)
+     '(sh-heredoc ((((class color) (background light)) (:foreground "purple4")))))
+
+  (custom-set-faces
+   '(default ((t (:inherit nil :stipple nil :background "undefined" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "unknown" :family "Monaco"))))
+   '(fixed-pitch ((t nil)))
+   '(font-lock-builtin-face ((t (:foreground "cyan"))))
+   '(font-lock-comment-face ((t (:foreground "green"))))
+   '(font-lock-string-face ((t (:foreground "yellow"))))
+   '(font-lock-variable-name-face ((t (:foreground "red"))))
+   '(my-long-line-face ((((class color)) (:underline t :weight bold))) t)
+   '(sh-heredoc ((((class color) (background light)) (:foreground "yellow")))))
+  ) ;; if display-graphic-p
+
+;; not used, but is a selector for macOS:
+;;    (if (eq system-type 'darwin)
