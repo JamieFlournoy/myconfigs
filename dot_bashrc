@@ -166,11 +166,9 @@ fi
 #
 # Try and use rbenv if available
 #
-#if [ -e /usr/local/bin/brew ]; then
-#    export RBENV_ROOT=/usr/local/var/rbenv
-#fi
-
-if [ -e ~/.rbenv/bin/rbenv ]; then
+if [ -e /usr/local/bin/rbenv ]; then
+    eval "$(rbenv init -)"
+elif [ -e ~/.rbenv/bin/rbenv ]; then
     export PATH="$HOME/.rbenv/bin:$PATH"
     eval "$(rbenv init -)"
 fi
@@ -178,6 +176,17 @@ fi
 if [[ -f ~/.bashrc_local ]]; then
     . ~/.bashrc_local
 fi
+
+#
+# Try and use jenv if available
+#
+# To install jenv on Mac OS: brew install jenv
+#
+if which jenv > /dev/null; then
+    export PATH="$HOME/.jenv/bin:$PATH"
+    eval "$(jenv init -)"
+fi
+
 
 #GPG_TTY=$(tty)
 #export GPG_TTY
