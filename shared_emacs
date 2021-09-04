@@ -124,14 +124,16 @@
                            '(("^.\\{1011,\\}$" (0 'my-long-line-face t))))))))
 
 (if (eq system-type 'gnu/linux)
-    (set-scroll-bar-mode 'right)
+    (with-eval-after-load "scroll-bar"
+      (set-scroll-bar-mode 'right)
+      )
 
-    ;; disable middle button, because if it's a wheel mouse that button is
-    ;; too sensitive so I get lots of unexpected pasted crap in the middle
-    ;; of the stuff I'm editing!
-    (global-set-key [mouse-2] nil)
+  ;; disable middle button, because if it's a wheel mouse that button is
+  ;; too sensitive so I get lots of unexpected pasted crap in the middle
+  ;; of the stuff I'm editing!
+  (global-set-key [mouse-2] nil)
 
-    ;; (set-default-font "Liberation Mono-9")
+  ;; (set-default-font "Liberation Mono-9")
 )
 
 ;;
