@@ -19,7 +19,10 @@ shopt -s checkwinsize
 # lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Note that these functions automatically check for dir existence
+# before adding them to the PATH
 prepend_once_to_path "$HOME/bin"
+prepend_once_to_path "$HOME/.local/bin"
 prepend_once_to_path "/usr/local/bin"
 add_once_to_path "$HOME/homebrew/bin"
 add_once_to_path "$HOME/Library/iTunes/Scripts/iTunes-LAME.app/Contents/Resources/"
