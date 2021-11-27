@@ -20,11 +20,12 @@ alias gc="git checkout"
 alias gcb='git checkout -b'
 
 alias gai='git add -i'
-alias gl='git log --graph --pretty=oneline --abbrev-commit --decorate'
+alias gl='git log --graph --pretty=oneline --abbrev-commit --decorate --branches'
 
 alias gd='git diff'
 alias gdh='git diff HEAD'
 alias gdc='git diff --cached'
+alias gds='git diff --compact-summary'
 
 alias ebg="emacs build.gradle &"
 
