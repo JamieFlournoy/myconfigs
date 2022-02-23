@@ -19,7 +19,10 @@ shopt -s checkwinsize
 # lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Note that these functions automatically check for dir existence
+# before adding them to the PATH
 prepend_once_to_path "$HOME/bin"
+prepend_once_to_path "$HOME/.local/bin"
 prepend_once_to_path "/usr/local/bin"
 add_once_to_path "$HOME/homebrew/bin"
 add_once_to_path "$HOME/Library/iTunes/Scripts/iTunes-LAME.app/Contents/Resources/"
@@ -166,18 +169,31 @@ fi
 #
 # Try and use rbenv if available
 #
-#if [ -e /usr/local/bin/brew ]; then
-#    export RBENV_ROOT=/usr/local/var/rbenv
-#fi
-
-if [ -e ~/.rbenv/bin/rbenv ]; then
-    export PATH="$HOME/.rbenv/bin:$PATH"
+if [[ `which rbenv` == '' ]]; then
+    if [ -e ~/.rbenv/bin/rbenv ]; then
+        export PATH="$HOME/.rbenv/bin:$PATH"
+    fi
+fi
+# If it's in the path (which it should be by now if it's installed),
+# use it.
+if [[ `which rbenv` != '' ]]; then
     eval "$(rbenv init -)"
 fi
 
 if [[ -f ~/.bashrc_local ]]; then
     . ~/.bashrc_local
 fi
+
+#
+# Try and use jenv if available
+#
+# To install jenv on Mac OS: brew install jenv
+#
+if which jenv > /dev/null; then
+    export PATH="$HOME/.jenv/bin:$PATH"
+    eval "$(jenv init -)"
+fi
+
 
 #GPG_TTY=$(tty)
 #export GPG_TTY
@@ -189,3 +205,13 @@ else
 fi
 
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+
+# direnv docs say this must run last.
+if [[ `which direnv` != '' ]]; then
+    eval "$(direnv hook bash)"
+else
+    if [[ -e ~/.envrc ]]; then
+        echo "Warning: You have a direnv config file (~/.envrc), but direnv is not"
+        echo "installed / not on your PATH, so your ~/.envrc won't be loaded."
+    fi
+fi

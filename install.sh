@@ -36,6 +36,21 @@ function install_copy {
     /bin/cp "${SOURCE}" "${DOTFILE}"
 }
 
+function maybe_install_emacs_column_marker {
+    SOURCE_URL="https://www.emacswiki.org/emacs/download/column-marker.el"
+    DEST_DIR=~/.emacs.d/column-marker/
+    if [[ `which emacs` != '' ]]; then
+        /bin/mkdir -p $DEST_DIR
+        pushd $DEST_DIR
+        /usr/bin/curl -O "$SOURCE_URL"
+        emacs -batch -f batch-byte-compile column-marker.el
+        popd
+    else
+        echo "Can't find emacs, so column-marker.el will not be installed."
+        echo "Re-run this script to install it once emacs has been installed."
+    fi
+}
+
 install_symlink bashrc
 install_symlink emacs
 
@@ -54,3 +69,5 @@ install_symlink tmux.conf
 install_symlink bash_aliases
 install_symlink bash_profile
 install_symlink irbrc
+
+maybe_install_emacs_column_marker
