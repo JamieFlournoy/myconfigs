@@ -2,7 +2,7 @@
 
 alias ll="ls -ltrA"
 
-alias e="emacs -nw"
+alias e="$EDITOR"
 
 # Git related aliases
 alias gs='git status'
@@ -27,7 +27,7 @@ alias gdh='git diff HEAD'
 alias gdc='git diff --cached'
 alias gds='git diff --compact-summary'
 
-alias ebg="emacs build.gradle &"
+alias ebg="$EDITOR build.gradle &"
 
 #alias at="./bin/autotest"
 
