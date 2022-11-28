@@ -78,7 +78,7 @@ function set_editor() {
     # If EDITOR is Emacs, don't launch it as its own X11 window;
     # launch it in character mode.
     if [[ $EDITOR == *"emacs" ]]; then
-        export EDITOR=$EDITOR\ -nw
+        export EDITOR="$EDITOR -nw -Q"
     fi
 }
 
