@@ -33,6 +33,8 @@ add_once_to_path "/usr/local/sbin"
 
 export TERM=dtterm
 
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # xterm is lame, use 256 colors.
 if [[ "$TERM" == "xterm" ]]; then
   export TERM=xterm-256color
