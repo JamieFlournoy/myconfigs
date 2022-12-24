@@ -203,3 +203,8 @@ else
         echo "installed / not on your PATH, so your ~/.envrc won't be loaded."
     fi
 fi
+
+if [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]]; then
+    export SDKMAN_DIR="$HOME/.sdkman"
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+fi
