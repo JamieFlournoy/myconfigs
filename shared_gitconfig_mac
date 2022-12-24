@@ -10,9 +10,9 @@
 
 [color "diff-highlight"]
   oldNormal = "red"
-  oldHighlight = "black red"
+  oldHighlight = "brightwhite red"
   newNormal = "green"
-  newHighlight = "black green"
+  newHighlight = "brightwhite green"
 
 # Meld is not available for Mac.
 [merge]
