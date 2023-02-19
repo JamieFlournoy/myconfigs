@@ -2,7 +2,12 @@
 
 alias ll="ls -ltrA"
 
-alias e="$EDITOR"
+alias e="${EDITOR}"
+if [[ -n "${EDITOR_LITE}" ]]; then
+    alias eq="${EDITOR_LITE}"
+else
+    alias eq="${EDITOR}"
+fi
 
 # Git related aliases
 alias gs='git status'
