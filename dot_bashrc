@@ -19,6 +19,16 @@ shopt -s checkwinsize
 # lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Set up platformio (an embedded software development system) binaries
+# in ~/.local/bin.
+#
+# This comes before the prepend_once_to_path for ~/.local/bin so that
+# that function will find the ~/.local/bin dir if these functions
+# actually created it.
+symlink_one_binary_to_dotlocal ~/.platformio/penv/bin/platformio
+symlink_one_binary_to_dotlocal ~/.platformio/penv/bin/pio
+symlink_one_binary_to_dotlocal ~/.platformio/penv/bin/piodebuggdb
+
 # Note that these functions automatically check for dir existence
 # before adding them to the PATH
 prepend_once_to_path "$HOME/bin"

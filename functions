@@ -212,3 +212,12 @@ rule() {
 
 export -f strip_diff_leading_symbols
 export -f rule
+
+
+function symlink_one_binary_to_dotlocal() {
+    real_location=$1
+    if [[ -e "$real_location" ]]; then
+        mkdir -p ~/.local/bin/
+        ln -s $real_location ~/.local/bin/
+    fi
+}
