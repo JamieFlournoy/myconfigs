@@ -279,18 +279,24 @@
     (previous-line 1)))
 
 (require 'package)
-;;(add-to-list 'package-archives
-;;             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-;;(setq package-list '(groovy-mode))
-;;(unless package-archive-contents
-;;  (package-refresh-contents))
-;;(dolist (package package-list)
-;;  (unless (package-installed-p package)
-;;        (package-install package)))
+;; TODO: install use-package and then uncomment this:
+;;(use-package auto-package-update
+;;    :ensure t
+;;    :config
+;;    (setq auto-package-update-delete-old-versions t
+;;          auto-package-update-interval 4)
+;;    (auto-package-update-maybe))
+
+;; (setq package-list '(groovy-mode))
+;; (unless package-archive-contents
+;;   (package-refresh-contents))
+;; (dolist (package package-list)
+;;   (unless (package-installed-p package)
+;;         (package-install package)))
 
 (setq todotxt-file "~/todotxt/todo.txt")
 (add-hook 'todotxt-mode-hook
