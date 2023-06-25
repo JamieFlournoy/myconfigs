@@ -69,5 +69,6 @@ install_symlink tmux.conf
 install_symlink bash_aliases
 install_symlink bash_profile
 install_symlink irbrc
+install_symlink tm_properties
 
 maybe_install_emacs_column_marker
