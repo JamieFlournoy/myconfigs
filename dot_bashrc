@@ -192,6 +192,13 @@ if which jenv > /dev/null; then
     eval "$(jenv init -)"
 fi
 
+#
+# Try and use cargo (Rust) if available
+#
+
+if [[ -f ~/.cargo/env ]]; then
+    . "$HOME/.cargo/env"
+fi
 
 #GPG_TTY=$(tty)
 #export GPG_TTY
