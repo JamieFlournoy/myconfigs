@@ -331,6 +331,8 @@
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
+;; uncomment to refresh the Melpa package list on startup
+;;(package-refresh-contents)
 
 ;; TODO: install use-package and then uncomment this:
 ;;(use-package auto-package-update

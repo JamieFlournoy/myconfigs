@@ -106,8 +106,9 @@ function find_git_bash_functions() {
     local_completion_d=/usr/local/etc/bash_completion.d
     # see http://www.linuxjournal.com/content/bash-arrays
     completion_dirs=(
-        /etc/bash_completion.d/git 
-        $local_completion_d/git-completion.bash 
+        /etc/bash_completion.d/git
+        /usr/share/bash-completion/completions/git
+        $local_completion_d/git-completion.bash
     )
     git_completion=$(first_extant ${completion_dirs[*]})
     if [[ -e $git_completion ]]; then
