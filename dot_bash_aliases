@@ -9,7 +9,9 @@ else
     alias eq="${EDITOR}"
 fi
 
-# Git related aliases
+#
+# Git-related aliases
+#
 alias gs='git status'
 function gc {
   if [ -z "$1" ]; then
@@ -28,9 +30,17 @@ alias gai='git add -i'
 alias gl='git log --graph --pretty=oneline --abbrev-commit --decorate --branches'
 
 alias gd='git diff'
+__git_complete gd _git_diff
 alias gdh='git diff HEAD'
+__git_complete gdh _git_diff
 alias gdc='git diff --cached'
+__git_complete gdc _git_diff
 alias gds='git diff --compact-summary'
+__git_complete gds _git_diff
+#
+# End of Git-related aliases
+#
+
 
 alias ebg="$EDITOR build.gradle &"
 

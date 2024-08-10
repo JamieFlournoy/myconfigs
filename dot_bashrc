@@ -75,18 +75,6 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-if [ -f ~/.bash_aliases ]; then
- . ~/.bash_aliases
-fi
-
-if [ -f ~/myconfigs/dot_bash_aliases ]; then
- . ~/myconfigs/dot_bash_aliases
-fi
-
-if [ -f ~/.bash_aliases_jamie ]; then
- . ~/.bash_aliases_jamie
-fi
-
 # If homebrew is installed, try to enable diff-highlight.
 if which brew > /dev/null; then
     if [[ ! -e ~/bin/diff-highlight ]]; then
@@ -225,3 +213,20 @@ if [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]]; then
     export SDKMAN_DIR="$HOME/.sdkman"
     source "$HOME/.sdkman/bin/sdkman-init.sh"
 fi
+
+
+# Aliases need to go after git completion because they include code
+# that makes git completion of aliases work. I choose to put them at
+# the end because nothing should depend on aliases.
+if [ -f ~/.bash_aliases ]; then
+ . ~/.bash_aliases
+fi
+
+if [ -f ~/myconfigs/dot_bash_aliases ]; then
+ . ~/myconfigs/dot_bash_aliases
+fi
+
+if [ -f ~/.bash_aliases_jamie ]; then
+ . ~/.bash_aliases_jamie
+fi
+
