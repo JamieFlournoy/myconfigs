@@ -108,6 +108,7 @@ function find_git_bash_functions() {
     completion_dirs=(
         /etc/bash_completion.d/git
         /usr/share/bash-completion/completions/git
+        /opt/homebrew/etc/bash_completion.d/git-completion.bash
         $local_completion_d/git-completion.bash
     )
     git_completion=$(first_extant ${completion_dirs[*]})

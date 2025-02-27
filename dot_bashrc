@@ -71,9 +71,29 @@ if [[ $color_term -ne 0 ]]; then
     alias egrep='egrep --color=auto'
 fi
 
+# Load systemwide bash completion scripts
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+# Load /usr/local bash completion scripts
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+
+# TODO: move the 'is homebrew present and if so what is its prefix' code
+# into a shell-scoped variable
+
+# TODO: make a general 'load bash completion for ___' function and use it here
+# to load 'git-completion.bash', 'brew', 'gzip', 'mount', 'postgresql', 'rsync',
+# 'ssh', 'sshfs', and 'sqlite' completion scripts
+#
+# Currently git bash completion is loaded below, via
+# find_git_bash_functions. This might wanna be merged into the above function.
+
+#
+# For later use, if identifying Intel vs. Apple Silicon is needed:
+#
+# if [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
+#   echo "It's Apple silicon!"
+# else
 
 # If homebrew is installed, try to enable diff-highlight.
 if which brew > /dev/null; then
@@ -196,8 +216,6 @@ fi
 #else
 #    eval $(gpg-agent --daemon --log-file /tmp/gpg.log --pinentry-program /usr/local/bin/pinentry-mac)
 #fi
-
-[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
 # direnv docs say this must run last.
 if [[ `which direnv` != '' ]]; then
