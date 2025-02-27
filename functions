@@ -118,8 +118,21 @@ function find_git_bash_functions() {
         # are split into separate files. So we need the prompt function
         # too.
         if [[ $git_completion == *"git-completion.bash" ]]; then
+            # TODO generalize this into a set of search locations
+            # kinda like completion_dirs above in this function.
             git_prompt_functions=$local_completion_d/git-prompt.sh
-            echo $git_prompt_functions
+            if [[ -f $git_prompt_functions ]]; then
+                echo $git_prompt_functions
+            else
+                # Try and find the functions where Homebrew puts them
+                # on Apple silicon based machines.
+                maybe_prompt_dir=$HOMEBREW_PREFIX/opt/bash-git-prompt/share
+                if [[ -d $maybe_prompt_dir ]]; then
+                    __GIT_PROMPT_DIR=$maybe_prompt_dir
+                    git_prompt_functions=$__GIT_PROMPT_DIR/gitprompt.sh
+                    echo $git_prompt_functions
+                fi
+            fi
         fi
     fi
     # Workaround for Ubuntu Trusty Tahr: git-prompt is all there is
