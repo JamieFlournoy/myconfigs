@@ -20,7 +20,8 @@ function gc {
     git checkout $1
   fi
 }
-alias gb='git branch -a -v'
+alias gb='git branch -vv'
+alias gba='git branch -a -vv'
 alias gbd='git branch -d'
 
 alias gc="git checkout"
