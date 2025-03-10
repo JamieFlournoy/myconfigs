@@ -124,20 +124,22 @@ do
     . $f
 done
 
-have_git_ps1_function=0
-if [[ -n $git_function_files ]]; then
-    type -t __git_ps1 | grep -qE 'shell|function' && have_git_ps1_function=1
-    type -t git_prompt_config | grep -qE 'shell|function' && have_git_ps1_function=1
-    if [[ $have_git_ps1_function -eq 0 ]]; then
-        echo "Loaded git completion but not prompt functions."
-#        type -t __git_ps1 | grep -qE 'shell|function' | echo
-        if which brew > /dev/null; then
-            echo "Try 'brew install bash-git-prompt' to install them."
-        fi
-    fi
-else
-    echo "Could not find Git bash functions."
-fi
+export PS1="\t \h \u \w >"
+
+#have_git_ps1_function=0
+#if [[ -n $git_function_files ]]; then
+#    type -t __git_ps1 | grep -qE 'shell|function' && have_git_ps1_function=1
+#    type -t git_prompt_config | grep -qE 'shell|function' && have_git_ps1_function=1
+#    if [[ $have_git_ps1_function -eq 0 ]]; then
+#        echo "Loaded git completion but not prompt functions."
+##        type -t __git_ps1 | grep -qE 'shell|function' | echo
+#        if which brew > /dev/null; then
+#            echo "Try 'brew install bash-git-prompt' to install them."
+#        fi
+#    fi
+#else
+#    echo "Could not find Git bash functions."
+#fi
 
 if [[ $color_term -ne 0 ]]; then
     # Note: ~/bin/show-term-colors.sh shows terminal color codes
@@ -147,11 +149,12 @@ if [[ $color_term -ne 0 ]]; then
     prompt_color_2="\[\033[35m\]"
 fi
 # Build the PS1 prompt, with or without the git branch, and with or without color.
-function prompt_with_git() {
-    PS1=${prompt_color}'\D{%a %-m/%-d} \t \u@\h \w '$GIT_BRANCH${no_color}'\n'${prompt_color_2}'\$ '${no_color}
-}
-PROMPT_COMMAND=prompt_with_git
-#echo Just set PS1 to $PS1
+#function prompt_with_git() {
+#    __GIT_BRANCH=$(git branch --show-current)
+#    PS1=${prompt_color}'\D{%a %-m/%-d} \t \u@\h \w '$__GIT_BRANCH${no_color}'\n'${prompt_color_2}'\$ '${no_color}
+#}
+#PROMPT_COMMAND=prompt_with_git
+#echo We just set PS1 to $PS1
 
 if [[ -f ~/.alias_completion_function ]]; then
     source ~/.alias_completion_function
