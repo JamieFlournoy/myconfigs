@@ -25,3 +25,6 @@
   prompt = false
   keepbackup = false
   path = /Users/jamieflournoy/bin/p4merge
+
+[includeIf "gitdir:/Users/jamie/**"]
+  path = shared_gitconfig_mac_user-jamie

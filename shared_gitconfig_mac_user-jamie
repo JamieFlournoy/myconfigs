@@ -1,0 +1,2 @@
+[mergetool "p4merge"]
+  path = /Users/jamie/bin/p4merge
