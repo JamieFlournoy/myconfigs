@@ -1,6 +1,7 @@
 # -*- mode: shell-script -*-
 
 alias ll="ls -ltrA"
+alias lld="ls -lF | grep '/$'"
 
 alias e="${EDITOR}"
 if [[ -n "${EDITOR_LITE}" ]]; then

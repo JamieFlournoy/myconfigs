@@ -254,6 +254,10 @@ if [ -f ~/myconfigs/dot_bash_aliases ]; then
  . ~/myconfigs/dot_bash_aliases
 fi
 
+if [ -f ~/.bash_aliases_local ]; then
+ . ~/.bash_aliases_local
+fi
+
 if [ -f ~/.bash_aliases_jamie ]; then
  . ~/.bash_aliases_jamie
 fi
