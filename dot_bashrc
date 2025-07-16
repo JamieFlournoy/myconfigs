@@ -85,6 +85,9 @@ fi
 # Load /usr/local bash completion scripts
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
+if [ -f /opt/homebrew/etc/bash_completion.d/stripe-completion.bash ]; then
+    . /opt/homebrew/etc/bash_completion.d/stripe-completion.bash
+fi
 # TODO: move the 'is homebrew present and if so what is its prefix' code
 # into a shell-scoped variable
 
