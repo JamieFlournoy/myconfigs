@@ -29,7 +29,8 @@ alias gc="git checkout"
 alias gcb='git checkout -b'
 
 alias gai='git add -i'
-alias gl='git log --graph --pretty=oneline --abbrev-commit --decorate --branches'
+
+alias gl='git lol'
 
 alias gd='git diff'
 __git_complete gd _git_diff
