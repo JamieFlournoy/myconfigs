@@ -79,6 +79,9 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+if [ -f /opt/homebrew/etc/bash_completion ]; then
+    . /opt/homebrew/etc/bash_completion
+fi
 # Load /usr/local bash completion scripts
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
