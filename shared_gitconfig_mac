@@ -6,7 +6,7 @@
 # Nicer diff formatting (from https://github.com/paulirish/dotfiles)
 # (uses functions definedin ~/myconfig/functions)
 [core]
-  pager = bash -lc 'diff-highlight | strip_diff_leading_symbols | less -r' -
+  pager = bash -lc 'diff-highlight | strip_diff_leading_symbols | less -RS' -
 
 [color "diff-highlight"]
   oldNormal = "red"
