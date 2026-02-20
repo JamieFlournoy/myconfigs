@@ -24,6 +24,7 @@ function gc {
 alias gb='git branch -vv'
 alias gba='git branch -a -vv'
 alias gbd='git branch -d'
+alias gbs='git branch --show-current'
 
 alias gc="git checkout"
 alias gcb='git checkout -b'
