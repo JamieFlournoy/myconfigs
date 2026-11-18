@@ -188,6 +188,10 @@ if [[ $enable_rvm == 1 ]]; then
     fi
 fi
 
+if which mise > /dev/null; then
+    eval "$(mise activate bash)"
+fi
+
 #
 # Try and use rbenv if available
 #
