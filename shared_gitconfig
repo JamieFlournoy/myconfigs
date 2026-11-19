@@ -11,6 +11,9 @@
        	# show the age of every local branch. BRanch AGE -> brage
 	brage = "!f() { git for-each-ref --sort=committerdate refs/heads $1  --format=\"%(refname:short)\" ; }; g() { for C in $(f $1) ; do git show -s --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset  $C\" \"$C\" -- ; done; }; g "
 
+[init]
+	defaultBranch = main
+
 [merge]
 	tool = opendiff
 [core]
