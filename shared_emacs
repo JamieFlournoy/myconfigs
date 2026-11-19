@@ -1,5 +1,8 @@
 ;; -*- mode: Emacs-Lisp; lexical-binding: t -*-
 
+(require 'comp)
+(setq native-comp-driver-options (cons "-mmacosx-version-min=11" native-comp-driver-options))
+
 
 ;;
 ;;
